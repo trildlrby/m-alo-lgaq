@@ -10,26 +10,97 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <title>Horizon — Five Year Plan</title>
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%23F2EDE1'/%3E%3Ccircle cx='90' cy='90' r='55' fill='none' stroke='%23C25A2E' stroke-width='6'/%3E%3Ccircle cx='90' cy='90' r='8' fill='%23C25A2E'/%3E%3C/svg%3E" />
+  <script>
+    // Apply theme before paint to prevent flash
+    (function() {
+      try {
+        var pref = localStorage.getItem('horizon_theme_pref') || 'system';
+        var resolved = pref;
+        if (pref === 'system') {
+          resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', resolved);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', resolved === 'dark' ? '#1A1814' : '#F2EDE1');
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter+Tight:wght@400;500;600&display=swap');
+
+    /* ===== THEME VARIABLES ===== */
+    :root, [data-theme="light"] {
+      --bg: #F2EDE1;
+      --surface: #FBF7EC;
+      --surface-2: #E8E2D0;
+      --border: #D9D0BC;
+      --text: #2A2720;
+      --text-muted: #8A7F6A;
+      --accent: #C25A2E;
+      --accent-fg: #F2EDE1;
+      --accent-soft-bg: #F5E4D6;
+      --positive: #5A7A3E;
+      --positive-bg: #EDF0E3;
+      --negative: #A64A2E;
+      --negative-bg: #F3E5E0;
+      --neutral: #8B6F2E;
+      --neutral-bg: #F0E8D0;
+      --vision-bg: #2A2720;
+      --vision-text: #F2EDE1;
+      --vision-accent: #E8A87C;
+      --btn-primary-bg: #2A2720;
+      --btn-primary-text: #F2EDE1;
+      --modal-overlay: rgba(42,39,32,0.5);
+      --grain-dot: rgba(0,0,0,0.025);
+      --shadow-color: rgba(42,39,32,0.06);
+    }
+
+    [data-theme="dark"] {
+      --bg: #1A1814;
+      --surface: #25211B;
+      --surface-2: #33302A;
+      --border: #3A342A;
+      --text: #EAE3D0;
+      --text-muted: #8E8572;
+      --accent: #E07B47;
+      --accent-fg: #1A1814;
+      --accent-soft-bg: #3D2E24;
+      --positive: #A8C488;
+      --positive-bg: #2A3226;
+      --negative: #D67E5E;
+      --negative-bg: #3A2925;
+      --neutral: #C9A76A;
+      --neutral-bg: #332B1E;
+      --vision-bg: #EAE3D0;
+      --vision-text: #1A1814;
+      --vision-accent: #C25A2E;
+      --btn-primary-bg: #EAE3D0;
+      --btn-primary-text: #1A1814;
+      --modal-overlay: rgba(0,0,0,0.65);
+      --grain-dot: rgba(255,255,255,0.025);
+      --shadow-color: rgba(0,0,0,0.3);
+    }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html, body { margin: 0; padding: 0; }
     body {
-      background-color: #F2EDE1;
-      color: #2A2720;
+      background-color: var(--bg);
+      color: var(--text);
       font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
       min-height: 100dvh;
       -webkit-font-smoothing: antialiased;
       overscroll-behavior: none;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
     button, input, textarea, select { font-family: inherit; color: inherit; }
     button { background: none; border: none; cursor: pointer; padding: 0; }
     input, textarea, select { outline: none; }
     textarea { resize: none; }
     .font-display { font-family: 'Fraunces', Georgia, serif; }
-    .grain { background-image: radial-gradient(rgba(0,0,0,0.025) 1px, transparent 1px); background-size: 3px 3px; }
+    .grain { background-image: radial-gradient(var(--grain-dot) 1px, transparent 1px); background-size: 3px 3px; }
 
     /* Utility classes */
     .app-root { min-height: 100vh; min-height: 100dvh; padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
@@ -38,49 +109,49 @@
     /* Header */
     .header { padding: 32px 20px 16px; display: flex; justify-content: space-between; align-items: flex-start; }
     .header-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-    .header-dot { width: 6px; height: 6px; border-radius: 50%; background: #C25A2E; }
-    .header-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A7F6A; }
-    .header-title { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 500; letter-spacing: -0.02em; margin: 0; line-height: 1; }
-    .header-arrow { color: #8A7F6A; }
-    .icon-btn { width: 36px; height: 36px; border-radius: 50%; background: #E8E2D0; display: flex; align-items: center; justify-content: center; margin-top: 4px; flex-shrink: 0; }
+    .header-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .header-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
+    .header-title { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 500; letter-spacing: -0.02em; margin: 0; line-height: 1; color: var(--text); }
+    .header-arrow { color: var(--text-muted); }
+    .icon-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--surface-2); color: var(--text); display: flex; align-items: center; justify-content: center; margin-top: 4px; flex-shrink: 0; }
 
     /* Vision card */
-    .vision-card { width: 100%; text-align: left; padding: 24px; border-radius: 20px; background: #2A2720; color: #F2EDE1; position: relative; transition: transform 0.15s; }
+    .vision-card { width: 100%; text-align: left; padding: 24px; border-radius: 20px; background: var(--vision-bg); color: var(--vision-text); position: relative; transition: transform 0.15s, background-color 0.25s, color 0.25s; }
     .vision-card:active { transform: scale(0.99); }
     .vision-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .vision-card-badge { display: flex; align-items: center; gap: 8px; color: #E8A87C; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; }
+    .vision-card-badge { display: flex; align-items: center; gap: 8px; color: var(--vision-accent); font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; }
     .vision-text { font-family: 'Fraunces', serif; font-size: 20px; line-height: 1.35; letter-spacing: -0.01em; margin: 0; }
-    .vision-placeholder { color: #8A7F6A; font-style: italic; }
+    .vision-placeholder { color: var(--text-muted); font-style: italic; }
 
     /* Generic card */
-    .card { padding: 20px; border-radius: 20px; background: #FBF7EC; border: 1px solid #D9D0BC; }
+    .card { padding: 20px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); color: var(--text); transition: background-color 0.25s, border-color 0.25s; }
     .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .card-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: #8A7F6A; }
+    .card-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted); }
 
     /* Stats grid */
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
     .stat-box { padding: 12px; border-radius: 14px; }
-    .stat-box.positive { background: #EDF0E3; }
-    .stat-box.negative { background: #F3E5E0; }
+    .stat-box.positive { background: var(--positive-bg); }
+    .stat-box.negative { background: var(--negative-bg); }
     .stat-box-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
     .stat-box-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
     .stat-box-value { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 500; margin: 0; line-height: 1; }
-    .stat-box.positive .stat-box-label, .stat-box.positive .stat-box-value { color: #5A7A3E; }
-    .stat-box.negative .stat-box-label, .stat-box.negative .stat-box-value { color: #A64A2E; }
+    .stat-box.positive .stat-box-label, .stat-box.positive .stat-box-value { color: var(--positive); }
+    .stat-box.negative .stat-box-label, .stat-box.negative .stat-box-value { color: var(--negative); }
 
-    .link-btn { margin-top: 12px; font-size: 12px; color: #C25A2E; display: inline-flex; align-items: center; gap: 4px; }
+    .link-btn { margin-top: 12px; font-size: 12px; color: var(--accent); display: inline-flex; align-items: center; gap: 4px; }
 
     /* CTA button */
-    .cta-btn { width: 100%; padding: 20px; border-radius: 20px; background: #C25A2E; color: #F2EDE1; display: flex; align-items: center; justify-content: space-between; text-align: left; transition: transform 0.15s; }
+    .cta-btn { width: 100%; padding: 20px; border-radius: 20px; background: var(--accent); color: var(--accent-fg); display: flex; align-items: center; justify-content: space-between; text-align: left; transition: transform 0.15s, background-color 0.25s; }
     .cta-btn:active { transform: scale(0.99); }
     .cta-btn-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.8; }
     .cta-btn-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; margin: 2px 0 0; }
-    .cta-btn-icon { width: 40px; height: 40px; border-radius: 50%; background: rgba(242,237,225,0.15); display: flex; align-items: center; justify-content: center; }
+    .cta-btn-icon { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
 
     /* Nav */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #F2EDE1; border-top: 1px solid #D9D0BC; display: flex; padding-bottom: env(safe-area-inset-bottom); }
-    .nav-btn { flex: 1; padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #8A7F6A; }
-    .nav-btn.active { color: #C25A2E; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg); border-top: 1px solid var(--border); display: flex; padding-bottom: env(safe-area-inset-bottom); transition: background-color 0.25s, border-color 0.25s; }
+    .nav-btn { flex: 1; padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); }
+    .nav-btn.active { color: var(--accent); }
     .nav-btn-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
     .nav-btn.active .nav-btn-label { font-weight: 600; }
 
@@ -88,100 +159,97 @@
     .traj-row { display: flex; align-items: center; gap: 12px; }
     .traj-circle { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .traj-label { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500; margin: 0; }
-    .traj-sublabel { font-size: 12px; color: #8A7F6A; margin: 2px 0 0; }
+    .traj-sublabel { font-size: 12px; color: var(--text-muted); margin: 2px 0 0; }
 
     /* Milestones */
     .section-header { display: flex; align-items: center; justify-content: space-between; margin: 0 4px 12px; }
-    .section-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; margin: 0; }
-    .add-btn { width: 32px; height: 32px; border-radius: 50%; background: #C25A2E; color: #F2EDE1; display: flex; align-items: center; justify-content: center; }
+    .section-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; margin: 0; color: var(--text); }
+    .add-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--accent-fg); display: flex; align-items: center; justify-content: center; }
     .year-header { display: flex; align-items: center; gap: 12px; margin: 0 4px 8px; }
-    .year-dot { width: 6px; height: 6px; border-radius: 50%; background: #C25A2E; }
-    .year-label { font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 0.05em; color: #C25A2E; font-weight: 600; }
-    .year-line { flex: 1; height: 1px; background: #D9D0BC; }
-    .milestone-row { padding: 16px; border-radius: 12px; background: #FBF7EC; border: 1px solid #D9D0BC; display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+    .year-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .year-label { font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 0.05em; color: var(--accent); font-weight: 600; }
+    .year-line { flex: 1; height: 1px; background: var(--border); }
+    .milestone-row { padding: 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px; color: var(--text); }
     .ms-checkbox { margin-top: 2px; flex-shrink: 0; }
-    .ms-checkbox-filled { width: 20px; height: 20px; border-radius: 50%; background: #5A7A3E; display: flex; align-items: center; justify-content: center; }
-    .ms-checkbox-empty { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #8A7F6A; }
+    .ms-checkbox-filled { width: 20px; height: 20px; border-radius: 50%; background: var(--positive); display: flex; align-items: center; justify-content: center; }
+    .ms-checkbox-empty { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--text-muted); }
     .ms-text { flex: 1; font-size: 14px; line-height: 1.35; margin: 0; }
-    .ms-text.done { text-decoration: line-through; color: #8A7F6A; }
-    .ms-delete { flex-shrink: 0; opacity: 0.4; padding: 4px; }
+    .ms-text.done { text-decoration: line-through; color: var(--text-muted); }
+    .ms-delete { flex-shrink: 0; opacity: 0.4; padding: 4px; color: var(--text); }
 
     /* Empty state */
-    .empty { padding: 32px; border-radius: 20px; background: #FBF7EC; border: 1px solid #D9D0BC; text-align: center; }
-    .empty-icon { margin: 0 auto 12px; color: #8A7F6A; }
-    .empty-title { font-family: 'Fraunces', serif; font-style: italic; margin: 0 0 4px; }
-    .empty-sub { font-size: 12px; color: #8A7F6A; margin: 0; }
+    .empty { padding: 32px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); text-align: center; }
+    .empty-icon { margin: 0 auto 12px; color: var(--text-muted); }
+    .empty-title { font-family: 'Fraunces', serif; font-style: italic; margin: 0 0 4px; color: var(--text); }
+    .empty-sub { font-size: 12px; color: var(--text-muted); margin: 0; }
 
     /* History rows */
-    .history-row { width: 100%; padding: 16px; border-radius: 12px; background: #FBF7EC; border: 1px solid #D9D0BC; display: flex; align-items: center; gap: 12px; text-align: left; margin-bottom: 8px; transition: transform 0.15s; }
+    .history-row { width: 100%; padding: 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; gap: 12px; text-align: left; margin-bottom: 8px; transition: transform 0.15s, background-color 0.25s; }
     .history-row:active { transform: scale(0.99); }
     .traj-dot-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .history-row-content { flex: 1; min-width: 0; }
     .history-row-title { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 500; margin: 0; }
-    .history-row-meta { font-size: 12px; color: #8A7F6A; margin: 2px 0 0; }
+    .history-row-meta { font-size: 12px; color: var(--text-muted); margin: 2px 0 0; }
 
     /* Modal */
-    .modal-backdrop { position: fixed; inset: 0; z-index: 50; background: rgba(42,39,32,0.5); display: flex; align-items: flex-end; justify-content: center; }
-    .modal { width: 100%; max-height: 92vh; overflow-y: auto; background: #F2EDE1; border-radius: 24px 24px 0 0; color: #2A2720; }
+    .modal-backdrop { position: fixed; inset: 0; z-index: 50; background: var(--modal-overlay); display: flex; align-items: flex-end; justify-content: center; }
+    .modal { width: 100%; max-height: 92vh; overflow-y: auto; background: var(--bg); border-radius: 24px 24px 0 0; color: var(--text); }
     @media (min-width: 640px) {
       .modal-backdrop { align-items: center; }
       .modal { max-width: 440px; border-radius: 24px; }
     }
-    .modal-header { position: sticky; top: 0; background: #F2EDE1; display: flex; justify-content: space-between; padding: 20px 20px 12px; }
-    .modal-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; margin: 0; letter-spacing: -0.01em; }
-    .modal-subtitle { font-size: 12px; color: #8A7F6A; margin: 2px 0 0; }
+    .modal-header { position: sticky; top: 0; background: var(--bg); display: flex; justify-content: space-between; padding: 20px 20px 12px; }
+    .modal-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; margin: 0; letter-spacing: -0.01em; color: var(--text); }
+    .modal-subtitle { font-size: 12px; color: var(--text-muted); margin: 2px 0 0; }
     .modal-body { padding: 0 20px 24px; }
 
     /* Form controls */
-    .form-input, .form-textarea, .form-select { width: 100%; padding: 12px; border-radius: 12px; background: #FBF7EC; border: 1px solid #D9D0BC; font-size: 14px; }
+    .form-input, .form-textarea, .form-select { width: 100%; padding: 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 14px; }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
     .form-textarea.display { font-family: 'Fraunces', serif; font-size: 18px; padding: 16px; line-height: 1.35; }
-    .form-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A7F6A; display: block; margin-bottom: 6px; }
+    .form-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
     .year-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-    .year-chip { padding: 8px 14px; border-radius: 999px; background: #FBF7EC; border: 1px solid #D9D0BC; font-size: 14px; }
-    .year-chip.selected { background: #2A2720; color: #F2EDE1; border-color: #2A2720; }
-    .btn-primary { width: 100%; padding: 14px; border-radius: 12px; background: #2A2720; color: #F2EDE1; font-weight: 500; }
+    .year-chip { padding: 8px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 14px; }
+    .year-chip.selected { background: var(--btn-primary-bg); color: var(--btn-primary-text); border-color: var(--btn-primary-bg); }
+    .btn-primary { width: 100%; padding: 14px; border-radius: 12px; background: var(--btn-primary-bg); color: var(--btn-primary-text); font-weight: 500; }
     .btn-primary:disabled { opacity: 0.4; }
-    .btn-accent { width: 100%; padding: 14px; border-radius: 12px; background: #C25A2E; color: #F2EDE1; font-weight: 500; }
-    .btn-danger-ghost { width: 100%; padding: 12px; border-radius: 12px; color: #A64A2E; background: #F3E5E0; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .btn-text { width: 100%; padding: 12px; font-size: 14px; color: #8A7F6A; text-align: center; }
+    .btn-accent { width: 100%; padding: 14px; border-radius: 12px; background: var(--accent); color: var(--accent-fg); font-weight: 500; }
+    .btn-danger-ghost { width: 100%; padding: 12px; border-radius: 12px; color: var(--negative); background: var(--negative-bg); font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-text { width: 100%; padding: 12px; font-size: 14px; color: var(--text-muted); text-align: center; }
 
     /* Trajectory selector */
     .traj-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .traj-option { padding: 12px; border-radius: 12px; background: #FBF7EC; border: 1px solid #D9D0BC; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .traj-option { padding: 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); color: var(--text); display: flex; flex-direction: column; align-items: center; gap: 6px; }
     .traj-option.selected { border-width: 2px; }
     .traj-option-label { font-size: 12px; }
 
     /* List editor */
     .list-item { display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 8px; margin-bottom: 6px; }
-    .list-item-text { flex: 1; font-size: 14px; color: #2A2720; }
-    .list-item-remove { opacity: 0.5; padding: 4px; }
+    .list-item-text { flex: 1; font-size: 14px; color: var(--text); }
+    .list-item-remove { opacity: 0.5; padding: 4px; color: var(--text); }
     .list-add-row { display: flex; gap: 8px; }
-    .list-add-input { flex: 1; padding: 10px; border-radius: 8px; background: #FBF7EC; border: 1px solid #D9D0BC; font-size: 14px; }
-    .list-add-btn { padding: 0 12px; border-radius: 8px; color: #F2EDE1; }
+    .list-add-input { flex: 1; padding: 10px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 14px; }
+    .list-add-btn { padding: 0 12px; border-radius: 8px; color: var(--accent-fg); }
 
-    /* PIN screen */
-    .pin-screen { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; }
-    .pin-heading { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 500; text-align: center; margin: 0 0 8px; letter-spacing: -0.01em; }
-    .pin-sub { font-size: 14px; color: #8A7F6A; text-align: center; margin: 0 0 40px; }
-    .pin-dots { display: flex; gap: 16px; margin-bottom: 48px; }
-    .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #2A2720; transition: all 0.15s; }
-    .pin-dot.filled { background: #2A2720; }
-    .pin-dots.error { animation: shake 0.4s; }
-    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
-    .numpad { display: grid; grid-template-columns: repeat(3, 72px); gap: 12px; }
-    .num-key { width: 72px; height: 72px; border-radius: 50%; background: #FBF7EC; border: 1px solid #D9D0BC; font-family: 'Fraunces', serif; font-size: 24px; font-weight: 500; transition: background 0.1s; }
-    .num-key:active { background: #E8E2D0; }
-    .num-key.action { background: transparent; border: none; font-family: 'Inter Tight', sans-serif; font-size: 14px; color: #8A7F6A; }
-    .pin-error { color: #A64A2E; font-size: 13px; margin-top: 16px; height: 16px; }
-    .pin-footer { margin-top: 32px; font-size: 13px; color: #8A7F6A; text-align: center; }
-    .pin-footer button { color: #C25A2E; text-decoration: underline; }
+    /* Password lock screen */
+    .pin-screen { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; background: var(--bg); color: var(--text); }
+    .pin-heading { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 500; text-align: center; margin: 0 0 8px; letter-spacing: -0.01em; color: var(--text); }
+    .pin-sub { font-size: 14px; color: var(--text-muted); text-align: center; margin: 0 0 40px; max-width: 400px; }
+    .pin-footer { margin-top: 32px; font-size: 13px; color: var(--text-muted); text-align: center; }
+    .pin-footer button { color: var(--accent); text-decoration: underline; }
 
     /* Display lists */
     .display-list-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; font-weight: 600; margin-bottom: 8px; }
-    .display-list-item { padding: 12px; border-radius: 8px; font-size: 14px; color: #2A2720; margin-bottom: 6px; }
+    .display-list-item { padding: 12px; border-radius: 8px; font-size: 14px; color: var(--text); margin-bottom: 6px; }
 
     /* Reflection */
-    .reflection { font-family: 'Fraunces', serif; font-style: italic; line-height: 1.6; padding: 16px; border-radius: 12px; background: #FBF7EC; margin: 0; }
+    .reflection { font-family: 'Fraunces', serif; font-style: italic; line-height: 1.6; padding: 16px; border-radius: 12px; background: var(--surface); color: var(--text); margin: 0; }
+
+    /* Theme picker (settings) */
+    .theme-picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .theme-option { padding: 14px 8px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); color: var(--text); display: flex; flex-direction: column; align-items: center; gap: 6px; transition: background-color 0.15s; }
+    .theme-option.selected { border-width: 2px; border-color: var(--accent); background: var(--accent-soft-bg); }
+    .theme-option-label { font-size: 12px; font-weight: 500; }
 
     /* Utility */
     .space-y-5 > * + * { margin-top: 20px; }
@@ -237,7 +305,11 @@
       upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',
       copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
       checkMark: '<polyline points="20 6 9 17 4 12"/>',
-      lock: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'
+      lock: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+      sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+      moon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+      monitor: '<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
+      palette: '<circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>'
     };
 
     function Icon({ name, size = 16, color = 'currentColor', strokeWidth = 2, style = {} }) {
@@ -254,6 +326,70 @@
         dangerouslySetInnerHTML: { __html: ICON_PATHS[name] || '' }
       });
     }
+
+    // ----- Theme palettes (for JS-side color references) -----
+    const PALETTES = {
+      light: {
+        accent: '#C25A2E',
+        accentFg: '#F2EDE1',
+        positive: '#5A7A3E',
+        positiveBg: '#EDF0E3',
+        negative: '#A64A2E',
+        negativeBg: '#F3E5E0',
+        neutral: '#8B6F2E',
+        neutralBg: '#F0E8D0',
+        text: '#2A2720',
+        textMuted: '#8A7F6A',
+        surface: '#FBF7EC',
+        surface2: '#E8E2D0',
+        border: '#D9D0BC',
+        visionAccent: '#E8A87C',
+        accentSoftBg: '#F5E4D6'
+      },
+      dark: {
+        accent: '#E07B47',
+        accentFg: '#1A1814',
+        positive: '#A8C488',
+        positiveBg: '#2A3226',
+        negative: '#D67E5E',
+        negativeBg: '#3A2925',
+        neutral: '#C9A76A',
+        neutralBg: '#332B1E',
+        text: '#EAE3D0',
+        textMuted: '#8E8572',
+        surface: '#25211B',
+        surface2: '#33302A',
+        border: '#3A342A',
+        visionAccent: '#C25A2E',
+        accentSoftBg: '#3D2E24'
+      }
+    };
+
+    const THEME_PREF_KEY = 'horizon_theme_pref';
+
+    function getSystemTheme() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function resolveTheme(pref) {
+      return pref === 'system' ? getSystemTheme() : pref;
+    }
+
+    function applyTheme(pref) {
+      const resolved = resolveTheme(pref);
+      document.documentElement.setAttribute('data-theme', resolved);
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', resolved === 'dark' ? '#1A1814' : '#F2EDE1');
+      try { localStorage.setItem(THEME_PREF_KEY, pref); } catch {}
+    }
+
+    function loadThemePref() {
+      try { return localStorage.getItem(THEME_PREF_KEY) || 'system'; } catch { return 'system'; }
+    }
+
+    // Preact context for passing resolved palette to components
+    const ThemeContext = preact.createContext({ resolved: 'light', palette: PALETTES.light });
+    const useTheme = () => preactHooks.useContext(ThemeContext);
 
     // ----- Crypto helpers -----
     const VAULT_KEY = 'horizon_vault_v2';
@@ -319,7 +455,19 @@
 
     function defaultData() {
       const y = new Date().getFullYear();
-      return { vision: { text: '', startYear: y, targetYear: y + 5 }, milestones: [], checkins: [] };
+      return {
+        vision: { text: '', startYear: y, targetYear: y + 5 },
+        milestones: [],
+        checkins: [],
+        settings: { theme: 'system' }
+      };
+    }
+
+    function migrateData(data) {
+      // Ensure settings object exists for older exports
+      if (!data.settings) data.settings = { theme: 'system' };
+      if (!data.settings.theme) data.settings.theme = 'system';
+      return data;
     }
 
     async function setupNewVault(password) {
@@ -336,7 +484,7 @@
       if (!vault) return null;
       const key = await deriveKey(password, b64ToBuf(vault.salt));
       try {
-        const data = await decryptJSON(key, vault.iv, vault.ciphertext);
+        const data = migrateData(await decryptJSON(key, vault.iv, vault.ciphertext));
         return { key, data };
       } catch {
         return null;
@@ -366,6 +514,28 @@
       const [tab, setTab] = useState('home');
       const [modal, setModal] = useState(null);
       const [viewingId, setViewingId] = useState(null);
+      const [themePref, setThemePref] = useState(() => loadThemePref());
+      const [resolvedTheme, setResolvedTheme] = useState(() => resolveTheme(loadThemePref()));
+
+      // Listen for system theme changes when pref is "system"
+      useEffect(() => {
+        const mq = window.matchMedia('(prefers-color-scheme: dark)');
+        const handler = () => {
+          if (themePref === 'system') {
+            const r = getSystemTheme();
+            setResolvedTheme(r);
+            applyTheme('system');
+          }
+        };
+        mq.addEventListener('change', handler);
+        return () => mq.removeEventListener('change', handler);
+      }, [themePref]);
+
+      // Apply theme any time pref changes
+      useEffect(() => {
+        applyTheme(themePref);
+        setResolvedTheme(resolveTheme(themePref));
+      }, [themePref]);
 
       useEffect(() => {
         const vault = loadVault();
@@ -374,6 +544,10 @@
 
       const handleSetup = async (password) => {
         const { key, data } = await setupNewVault(password);
+        // Carry over any existing theme preference into the new vault
+        data.settings = data.settings || { theme: themePref };
+        data.settings.theme = themePref;
+        await encryptAndSave(key, data);
         setCryptoKey(key);
         setData(data);
         setAuthState('unlocked');
@@ -384,6 +558,9 @@
         if (!result) return false;
         setCryptoKey(result.key);
         setData(result.data);
+        // Apply the stored theme preference from the vault
+        const storedPref = (result.data.settings && result.data.settings.theme) || 'system';
+        setThemePref(storedPref);
         setAuthState('unlocked');
         return true;
       };
@@ -393,6 +570,13 @@
         try {
           if (cryptoKey) await encryptAndSave(cryptoKey, newData);
         } catch (e) { console.error('Save failed:', e); }
+      };
+
+      const updateTheme = (newPref) => {
+        setThemePref(newPref);
+        if (data) {
+          updateData({ ...data, settings: { ...(data.settings || {}), theme: newPref } });
+        }
       };
 
       const handleChangePassword = async (currentPassword, newPassword) => {
@@ -411,8 +595,11 @@
       };
 
       if (authState === 'loading') return null;
-      if (authState === 'setup') return h(PasswordSetupScreen, { onComplete: handleSetup });
-      if (authState === 'locked') return h(PasswordLockScreen, { onUnlock: handleUnlock, onWipe: wipeAll });
+
+      const themeValue = { resolved: resolvedTheme, palette: PALETTES[resolvedTheme] };
+
+      if (authState === 'setup') return html`<${ThemeContext.Provider} value=${themeValue}><${PasswordSetupScreen} onComplete=${handleSetup} /></${ThemeContext.Provider}>`;
+      if (authState === 'locked') return html`<${ThemeContext.Provider} value=${themeValue}><${PasswordLockScreen} onUnlock=${handleUnlock} onWipe=${wipeAll} /></${ThemeContext.Provider}>`;
       if (!data) return null;
 
       const { vision, milestones, checkins } = data;
@@ -423,6 +610,7 @@
         recent.reduce((s, c) => s + (c.trajectory === 'on' ? 1 : c.trajectory === 'off' ? -1 : 0), 0) / recent.length;
 
       return html`
+        <${ThemeContext.Provider} value=${themeValue}>
         <div class="app-root">
           <div class="header">
             <div>
@@ -493,16 +681,20 @@
           />`}
           ${modal === 'settings' && html`<${SettingsModal}
             data=${data}
+            themePref=${themePref}
+            onThemeChange=${updateTheme}
             onClose=${() => setModal(null)}
             onImport=${(d) => { updateData(d); setModal(null); }}
             onChangePassword=${handleChangePassword}
           />`}
         </div>
+        </${ThemeContext.Provider}>
       `;
     }
 
     // ----- Password Screens -----
     function PasswordSetupScreen({ onComplete }) {
+      const { palette: p } = useTheme();
       const [password, setPassword] = useState('');
       const [confirm, setConfirm] = useState('');
       const [show, setShow] = useState(false);
@@ -527,7 +719,7 @@
       return html`
         <div class="pin-screen">
           <div class="header-eyebrow" style=${{ justifyContent: 'center', marginBottom: '16px' }}>
-            <${Icon} name="lock" size=${14} color="#C25A2E" />
+            <${Icon} name="lock" size=${14} color=${p.accent} />
             <p class="header-label">Horizon</p>
           </div>
           <h1 class="pin-heading">Create a password</h1>
@@ -552,11 +744,11 @@
                 placeholder="Confirm password"
                 autocomplete="new-password"
               />
-              <label style=${{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#8A7F6A', padding: '4px 0' }}>
+              <label style=${{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: p.textMuted, padding: '4px 0' }}>
                 <input type="checkbox" checked=${show} onChange=${(e) => setShow(e.target.checked)} />
                 Show password
               </label>
-              ${error && html`<p style=${{ color: '#A64A2E', fontSize: '13px', textAlign: 'center', margin: '0' }}>${error}</p>`}
+              ${error && html`<p style=${{ color: p.negative, fontSize: '13px', textAlign: 'center', margin: '0' }}>${error}</p>`}
               <button type="submit" class="btn-primary" disabled=${busy}>
                 ${busy ? 'Encrypting…' : 'Create password'}
               </button>
@@ -567,6 +759,7 @@
     }
 
     function PasswordLockScreen({ onUnlock, onWipe }) {
+      const { palette: p } = useTheme();
       const [password, setPassword] = useState('');
       const [error, setError] = useState('');
       const [busy, setBusy] = useState(false);
@@ -589,11 +782,11 @@
       if (confirmWipe) {
         return html`
           <div class="pin-screen">
-            <h1 class="pin-heading" style=${{ color: '#A64A2E' }}>Reset everything?</h1>
+            <h1 class="pin-heading" style=${{ color: p.negative }}>Reset everything?</h1>
             <p class="pin-sub">This will delete your password and all your plan data. There is no way to recover it.</p>
             <div style=${{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '100%', maxWidth: '320px' }}>
-              <button class="btn-primary" style=${{ background: '#E8E2D0', color: '#2A2720' }} onClick=${() => setConfirmWipe(false)}>Cancel</button>
-              <button class="btn-primary" style=${{ background: '#A64A2E' }} onClick=${onWipe}>Delete all</button>
+              <button class="btn-primary" style=${{ background: p.surface2, color: p.text }} onClick=${() => setConfirmWipe(false)}>Cancel</button>
+              <button class="btn-primary" style=${{ background: p.negative, color: '#fff' }} onClick=${onWipe}>Delete all</button>
             </div>
           </div>
         `;
@@ -602,7 +795,7 @@
       return html`
         <div class="pin-screen">
           <div class="header-eyebrow" style=${{ justifyContent: 'center', marginBottom: '16px' }}>
-            <${Icon} name="lock" size=${14} color="#C25A2E" />
+            <${Icon} name="lock" size=${14} color=${p.accent} />
             <p class="header-label">Horizon</p>
           </div>
           <h1 class="pin-heading">Welcome back</h1>
@@ -619,11 +812,11 @@
                 autocomplete="current-password"
                 autofocus
               />
-              <label style=${{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#8A7F6A', padding: '4px 0' }}>
+              <label style=${{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: p.textMuted, padding: '4px 0' }}>
                 <input type="checkbox" checked=${show} onChange=${(e) => setShow(e.target.checked)} />
                 Show password
               </label>
-              ${error && html`<p style=${{ color: '#A64A2E', fontSize: '13px', textAlign: 'center', margin: '0' }}>${error}</p>`}
+              ${error && html`<p style=${{ color: p.negative, fontSize: '13px', textAlign: 'center', margin: '0' }}>${error}</p>`}
               <button type="submit" class="btn-primary" disabled=${busy || !password}>
                 ${busy ? 'Decrypting…' : 'Unlock'}
               </button>
@@ -648,17 +841,19 @@
 
     // ----- Home View -----
     function HomeView({ vision, milestones, latestCheckin, trajScore, checkinCount, onEditVision, onAddCheckin, onGotoPlan, onGotoHistory }) {
+      const { palette: p, resolved } = useTheme();
       const completed = milestones.filter(m => m.done).length;
+      const editIconColor = resolved === 'dark' ? 'rgba(26,24,20,0.5)' : 'rgba(242,237,225,0.5)';
 
       return html`
         <div class="container space-y-5">
           <button class="vision-card grain" onClick=${onEditVision}>
             <div class="vision-card-header">
               <div class="vision-card-badge">
-                <${Icon} name="sparkles" size=${14} color="#E8A87C" />
+                <${Icon} name="sparkles" size=${14} color=${p.visionAccent} />
                 <span>The Vision</span>
               </div>
-              <${Icon} name="edit" size=${14} color="rgba(242,237,225,0.5)" />
+              <${Icon} name="edit" size=${14} color=${editIconColor} />
             </div>
             ${vision.text
               ? html`<p class="vision-text">${vision.text}</p>`
@@ -669,7 +864,7 @@
           <div class="card">
             <div class="card-header">
               <span class="card-label">Trajectory</span>
-              <span style=${{ fontSize: '12px', color: '#8A7F6A' }}>last 6 check-ins</span>
+              <span style=${{ fontSize: '12px', color: p.textMuted }}>last 6 check-ins</span>
             </div>
             <${TrajectoryDisplay} score=${trajScore} />
           </div>
@@ -678,19 +873,19 @@
             <div class="card">
               <div class="card-header">
                 <span class="card-label">Latest Check-in</span>
-                <span style=${{ fontSize: '12px', color: '#8A7F6A' }}>${MONTHS[latestCheckin.month]} ${latestCheckin.year}</span>
+                <span style=${{ fontSize: '12px', color: p.textMuted }}>${MONTHS[latestCheckin.month]} ${latestCheckin.year}</span>
               </div>
               <div class="stats-grid">
                 <div class="stat-box positive">
                   <div class="stat-box-header">
-                    <${Icon} name="check" size=${14} color="#5A7A3E" />
+                    <${Icon} name="check" size=${14} color=${p.positive} />
                     <span class="stat-box-label">Positives</span>
                   </div>
                   <p class="stat-box-value">${latestCheckin.positives.length}</p>
                 </div>
                 <div class="stat-box negative">
                   <div class="stat-box-header">
-                    <${Icon} name="alert" size=${14} color="#A64A2E" />
+                    <${Icon} name="alert" size=${14} color=${p.negative} />
                     <span class="stat-box-label">Negatives</span>
                   </div>
                   <p class="stat-box-value">${latestCheckin.negatives.length}</p>
@@ -708,20 +903,20 @@
               <p class="cta-btn-title">${latestCheckin ? 'New check-in' : 'Start your first check-in'}</p>
             </div>
             <div class="cta-btn-icon">
-              <${Icon} name="plus" size=${20} color="#F2EDE1" />
+              <${Icon} name="plus" size=${20} color=${p.accentFg} />
             </div>
           </button>
 
           <div class="stats-grid">
             <button class="card" style=${{ textAlign: 'left' }} onClick=${onGotoPlan}>
               <p class="card-label" style=${{ marginBottom: '8px' }}>Milestones</p>
-              <p class="stat-box-value" style=${{ color: '#2A2720' }}>
-                ${completed}<span style=${{ color: '#8A7F6A' }}> / ${milestones.length}</span>
+              <p class="stat-box-value" style=${{ color: p.text }}>
+                ${completed}<span style=${{ color: p.textMuted }}> / ${milestones.length}</span>
               </p>
             </button>
             <button class="card" style=${{ textAlign: 'left' }} onClick=${onGotoHistory}>
               <p class="card-label" style=${{ marginBottom: '8px' }}>Check-ins</p>
-              <p class="stat-box-value" style=${{ color: '#2A2720' }}>${checkinCount}</p>
+              <p class="stat-box-value" style=${{ color: p.text }}>${checkinCount}</p>
             </button>
           </div>
         </div>
@@ -729,11 +924,12 @@
     }
 
     function TrajectoryDisplay({ score }) {
+      const { palette: p } = useTheme();
       if (score === null) {
         return html`
           <div class="traj-row">
-            <div class="traj-circle" style=${{ background: '#E8E2D0' }}>
-              <${Icon} name="minus" size=${20} color="#8A7F6A" />
+            <div class="traj-circle" style=${{ background: p.surface2 }}>
+              <${Icon} name="minus" size=${20} color=${p.textMuted} />
             </div>
             <div>
               <p class="traj-label">No data yet</p>
@@ -744,9 +940,9 @@
       }
 
       let label, sub, color, bg, iconName;
-      if (score > 0.33) { label = 'Moving toward it'; sub = 'Keep the momentum going'; color = '#5A7A3E'; bg = '#EDF0E3'; iconName = 'trendUp'; }
-      else if (score < -0.33) { label = 'Drifting off course'; sub = 'Time for a course correction'; color = '#A64A2E'; bg = '#F3E5E0'; iconName = 'trendDown'; }
-      else { label = 'Holding steady'; sub = 'Mixed signals — watch closely'; color = '#8B6F2E'; bg = '#F0E8D0'; iconName = 'minus'; }
+      if (score > 0.33) { label = 'Moving toward it'; sub = 'Keep the momentum going'; color = p.positive; bg = p.positiveBg; iconName = 'trendUp'; }
+      else if (score < -0.33) { label = 'Drifting off course'; sub = 'Time for a course correction'; color = p.negative; bg = p.negativeBg; iconName = 'trendDown'; }
+      else { label = 'Holding steady'; sub = 'Mixed signals — watch closely'; color = p.neutral; bg = p.neutralBg; iconName = 'minus'; }
 
       return html`
         <div class="traj-row">
@@ -762,12 +958,13 @@
     }
 
     function TrajectoryDot({ trajectory }) {
+      const { palette: p } = useTheme();
       const map = {
-        on: { bg: '#EDF0E3', color: '#5A7A3E', icon: 'trendUp' },
-        off: { bg: '#F3E5E0', color: '#A64A2E', icon: 'trendDown' },
-        neutral: { bg: '#F0E8D0', color: '#8B6F2E', icon: 'minus' }
+        on: { bg: p.positiveBg, color: p.positive, icon: 'trendUp' },
+        off: { bg: p.negativeBg, color: p.negative, icon: 'trendDown' },
+        neutral: { bg: p.neutralBg, color: p.neutral, icon: 'minus' }
       };
-      const c = map[trajectory] || { bg: '#E8E2D0', color: '#8A7F6A', icon: 'minus' };
+      const c = map[trajectory] || { bg: p.surface2, color: p.textMuted, icon: 'minus' };
       return html`
         <div class="traj-dot-circle" style=${{ background: c.bg }}>
           <${Icon} name=${c.icon} size=${16} color=${c.color} />
@@ -777,6 +974,7 @@
 
     // ----- Plan View -----
     function PlanView({ vision, milestones, onEditVision, onAddMilestone, onToggleMilestone, onDeleteMilestone }) {
+      const { palette: p } = useTheme();
       const sorted = [...milestones].sort((a, b) => a.year - b.year);
       const byYear = {};
       sorted.forEach(m => { if (!byYear[m.year]) byYear[m.year] = []; byYear[m.year].push(m); });
@@ -787,10 +985,10 @@
           <button class="card" style=${{ textAlign: 'left', width: '100%' }} onClick=${onEditVision}>
             <div class="card-header">
               <span class="card-label">By ${vision.targetYear}</span>
-              <${Icon} name="edit" size=${14} color="#8A7F6A" />
+              <${Icon} name="edit" size=${14} color=${p.textMuted} />
             </div>
             ${vision.text
-              ? html`<p class="vision-text" style=${{ fontSize: '18px', color: '#2A2720' }}>${vision.text}</p>`
+              ? html`<p class="vision-text" style=${{ fontSize: '18px', color: p.text }}>${vision.text}</p>`
               : html`<p class="vision-text vision-placeholder" style=${{ fontSize: '18px' }}>Define your vision…</p>`
             }
           </button>
@@ -799,13 +997,13 @@
             <div class="section-header">
               <h2 class="section-title">Milestones</h2>
               <button class="add-btn" onClick=${onAddMilestone}>
-                <${Icon} name="plus" size=${16} color="#F2EDE1" />
+                <${Icon} name="plus" size=${16} color=${p.accentFg} />
               </button>
             </div>
 
             ${milestones.length === 0 ? html`
               <div class="empty">
-                <div class="empty-icon"><${Icon} name="target" size=${24} color="#8A7F6A" /></div>
+                <div class="empty-icon"><${Icon} name="target" size=${24} color=${p.textMuted} /></div>
                 <p class="empty-title">No milestones yet</p>
                 <p class="empty-sub">Break your vision into year-by-year goals</p>
               </div>
@@ -823,7 +1021,7 @@
                         <div class="milestone-row" key=${m.id}>
                           <button class="ms-checkbox" onClick=${() => onToggleMilestone(m.id)}>
                             ${m.done
-                              ? html`<div class="ms-checkbox-filled"><${Icon} name="checkMark" size=${12} color="#F2EDE1" /></div>`
+                              ? html`<div class="ms-checkbox-filled"><${Icon} name="checkMark" size=${12} color="#FFFFFF" /></div>`
                               : html`<div class="ms-checkbox-empty"></div>`
                             }
                           </button>
@@ -845,17 +1043,18 @@
 
     // ----- History View -----
     function HistoryView({ checkins, onView, onAddCheckin }) {
+      const { palette: p } = useTheme();
       return html`
         <div class="container space-y-4">
           <div class="section-header">
             <h2 class="section-title">All check-ins</h2>
             <button class="add-btn" onClick=${onAddCheckin}>
-              <${Icon} name="plus" size=${16} color="#F2EDE1" />
+              <${Icon} name="plus" size=${16} color=${p.accentFg} />
             </button>
           </div>
           ${checkins.length === 0 ? html`
             <div class="empty">
-              <div class="empty-icon"><${Icon} name="calendar" size=${24} color="#8A7F6A" /></div>
+              <div class="empty-icon"><${Icon} name="calendar" size=${24} color=${p.textMuted} /></div>
               <p class="empty-title">No check-ins yet</p>
               <p class="empty-sub">Log your first month to start tracking</p>
             </div>
@@ -867,9 +1066,9 @@
                   <div class="history-row-content">
                     <p class="history-row-title">${MONTHS[c.month]} ${c.year}</p>
                     <p class="history-row-meta">
-                      <span style=${{ color: '#5A7A3E' }}>+${c.positives.length}</span>
+                      <span style=${{ color: p.positive }}>+${c.positives.length}</span>
                       <span style=${{ margin: '0 6px' }}>·</span>
-                      <span style=${{ color: '#A64A2E' }}>−${c.negatives.length}</span>
+                      <span style=${{ color: p.negative }}>−${c.negatives.length}</span>
                       ${c.nextActions && c.nextActions.length > 0 && html`
                         <${Fragment}>
                           <span style=${{ margin: '0 6px' }}>·</span>
@@ -878,7 +1077,7 @@
                       `}
                     </p>
                   </div>
-                  <${Icon} name="chevron" size=${16} color="#8A7F6A" />
+                  <${Icon} name="chevron" size=${16} color=${p.textMuted} />
                 </button>
               `)}
             </div>
@@ -979,6 +1178,7 @@
 
     // ----- Check-in modal -----
     function CheckinModal({ onClose, onSave }) {
+      const { palette: p } = useTheme();
       const now = new Date();
       const [month, setMonth] = useState(now.getMonth());
       const [year, setYear] = useState(now.getFullYear());
@@ -989,9 +1189,9 @@
       const [reflection, setReflection] = useState('');
 
       const trajOptions = [
-        { key: 'on', label: 'On track', color: '#5A7A3E', bg: '#EDF0E3', icon: 'trendUp' },
-        { key: 'neutral', label: 'Mixed', color: '#8B6F2E', bg: '#F0E8D0', icon: 'minus' },
-        { key: 'off', label: 'Off track', color: '#A64A2E', bg: '#F3E5E0', icon: 'trendDown' }
+        { key: 'on', label: 'On track', color: p.positive, bg: p.positiveBg, icon: 'trendUp' },
+        { key: 'neutral', label: 'Mixed', color: p.neutral, bg: p.neutralBg, icon: 'minus' },
+        { key: 'off', label: 'Off track', color: p.negative, bg: p.negativeBg, icon: 'trendDown' }
       ];
 
       return html`
@@ -1016,16 +1216,16 @@
                       onClick=${() => setTrajectory(opt.key)}
                     >
                       <${Icon} name=${opt.icon} size=${16} color=${opt.color} />
-                      <span class="traj-option-label" style=${{ color: selected ? opt.color : '#2A2720', fontWeight: selected ? 600 : 400 }}>${opt.label}</span>
+                      <span class="traj-option-label" style=${{ color: selected ? opt.color : p.text, fontWeight: selected ? 600 : 400 }}>${opt.label}</span>
                     </button>
                   `;
                 })}
               </div>
             </div>
 
-            <${ListEditor} label="Positives" placeholder="Something that went well…" items=${positives} setItems=${setPositives} accentColor="#5A7A3E" accentBg="#EDF0E3" iconName="check" />
-            <${ListEditor} label="Negatives" placeholder="A setback or challenge…" items=${negatives} setItems=${setNegatives} accentColor="#A64A2E" accentBg="#F3E5E0" iconName="alert" />
-            <${ListEditor} label="Next month's actions" placeholder="What will move you forward…" items=${nextActions} setItems=${setNextActions} accentColor="#C25A2E" accentBg="#F5E4D6" iconName="arrowRight" />
+            <${ListEditor} label="Positives" placeholder="Something that went well…" items=${positives} setItems=${setPositives} accentColor=${p.positive} accentBg=${p.positiveBg} iconName="check" />
+            <${ListEditor} label="Negatives" placeholder="A setback or challenge…" items=${negatives} setItems=${setNegatives} accentColor=${p.negative} accentBg=${p.negativeBg} iconName="alert" />
+            <${ListEditor} label="Next month's actions" placeholder="What will move you forward…" items=${nextActions} setItems=${setNextActions} accentColor=${p.accent} accentBg=${p.accentSoftBg} iconName="arrowRight" />
 
             <div>
               <label class="form-label">Reflection (optional)</label>
@@ -1077,7 +1277,7 @@
               placeholder=${placeholder}
             />
             <button class="list-add-btn" style=${{ background: accentColor }} onClick=${add}>
-              <${Icon} name="plus" size=${16} color="#F2EDE1" />
+              <${Icon} name="plus" size=${16} color="#FFFFFF" />
             </button>
           </div>
         </div>
@@ -1086,6 +1286,7 @@
 
     // ----- View check-in modal -----
     function ViewCheckinModal({ checkin, onClose, onDelete }) {
+      const { palette: p } = useTheme();
       const [confirmDelete, setConfirmDelete] = useState(false);
       if (!checkin) return null;
 
@@ -1094,35 +1295,35 @@
       return html`
         <${Modal} title="${MONTHS[checkin.month]} ${checkin.year}" subtitle="Check-in details" onClose=${onClose}>
           <div class="space-y-5">
-            <div class="flex items-center gap-3" style=${{ padding: '12px', borderRadius: '12px', background: '#FBF7EC' }}>
+            <div class="flex items-center gap-3" style=${{ padding: '12px', borderRadius: '12px', background: p.surface }}>
               <${TrajectoryDot} trajectory=${checkin.trajectory} />
               <div>
-                <p style=${{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#8A7F6A', margin: 0 }}>Trajectory</p>
-                <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: '2px 0 0' }}>${trajText}</p>
+                <p style=${{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: p.textMuted, margin: 0 }}>Trajectory</p>
+                <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: '2px 0 0', color: p.text }}>${trajText}</p>
               </div>
             </div>
 
-            ${checkin.positives.length > 0 && html`<${DisplayList} label="Positives" items=${checkin.positives} color="#5A7A3E" bg="#EDF0E3" iconName="check" />`}
-            ${checkin.negatives.length > 0 && html`<${DisplayList} label="Negatives" items=${checkin.negatives} color="#A64A2E" bg="#F3E5E0" iconName="alert" />`}
-            ${checkin.nextActions && checkin.nextActions.length > 0 && html`<${DisplayList} label="Next actions" items=${checkin.nextActions} color="#C25A2E" bg="#F5E4D6" iconName="arrowRight" />`}
+            ${checkin.positives.length > 0 && html`<${DisplayList} label="Positives" items=${checkin.positives} color=${p.positive} bg=${p.positiveBg} iconName="check" />`}
+            ${checkin.negatives.length > 0 && html`<${DisplayList} label="Negatives" items=${checkin.negatives} color=${p.negative} bg=${p.negativeBg} iconName="alert" />`}
+            ${checkin.nextActions && checkin.nextActions.length > 0 && html`<${DisplayList} label="Next actions" items=${checkin.nextActions} color=${p.accent} bg=${p.accentSoftBg} iconName="arrowRight" />`}
 
             ${checkin.reflection && html`
               <div>
-                <p style=${{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#8A7F6A', marginBottom: '8px' }}>Reflection</p>
+                <p style=${{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: p.textMuted, marginBottom: '8px' }}>Reflection</p>
                 <p class="reflection">"${checkin.reflection}"</p>
               </div>
             `}
 
             ${!confirmDelete ? html`
               <button class="btn-danger-ghost" onClick=${() => setConfirmDelete(true)}>
-                <${Icon} name="trash" size=${14} color="#A64A2E" /> Delete this check-in
+                <${Icon} name="trash" size=${14} color=${p.negative} /> Delete this check-in
               </button>
             ` : html`
               <div class="space-y-2">
-                <p style=${{ textAlign: 'center', fontSize: '14px', color: '#A64A2E' }}>Delete permanently?</p>
+                <p style=${{ textAlign: 'center', fontSize: '14px', color: p.negative }}>Delete permanently?</p>
                 <div style=${{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                  <button class="btn-primary" style=${{ background: '#E8E2D0', color: '#2A2720' }} onClick=${() => setConfirmDelete(false)}>Cancel</button>
-                  <button class="btn-primary" style=${{ background: '#A64A2E' }} onClick=${onDelete}>Delete</button>
+                  <button class="btn-primary" style=${{ background: p.surface2, color: p.text }} onClick=${() => setConfirmDelete(false)}>Cancel</button>
+                  <button class="btn-primary" style=${{ background: p.negative, color: '#fff' }} onClick=${onDelete}>Delete</button>
                 </div>
               </div>
             `}
@@ -1145,7 +1346,8 @@
     }
 
     // ----- Settings modal -----
-    function SettingsModal({ data, onClose, onImport, onChangePassword }) {
+    function SettingsModal({ data, themePref, onThemeChange, onClose, onImport, onChangePassword }) {
+      const { palette: p } = useTheme();
       const [mode, setMode] = useState('menu');
       const [importText, setImportText] = useState('');
       const [importError, setImportError] = useState('');
@@ -1218,46 +1420,95 @@
         }
       };
 
-      const title = mode === 'menu' ? 'Settings' : mode === 'export' ? 'Export data' : mode === 'import' ? 'Import data' : 'Change password';
-      const sub = mode === 'menu' ? 'Back up data or change your password' : mode === 'export' ? 'Copy or download to save somewhere safe' : mode === 'import' ? 'Paste your exported JSON below' : 'Your data will be re-encrypted with the new password';
+      const title = mode === 'menu' ? 'Settings'
+        : mode === 'export' ? 'Export data'
+        : mode === 'import' ? 'Import data'
+        : mode === 'appearance' ? 'Appearance'
+        : 'Change password';
+      const sub = mode === 'menu' ? 'Appearance, backups, and password'
+        : mode === 'export' ? 'Copy or download to save somewhere safe'
+        : mode === 'import' ? 'Paste your exported JSON below'
+        : mode === 'appearance' ? 'Choose how Horizon looks'
+        : 'Your data will be re-encrypted with the new password';
+
+      const themeOptions = [
+        { key: 'light', label: 'Light', icon: 'sun' },
+        { key: 'dark', label: 'Dark', icon: 'moon' },
+        { key: 'system', label: 'System', icon: 'monitor' }
+      ];
 
       return html`
         <${Modal} title=${title} subtitle=${sub} onClose=${onClose}>
           ${mode === 'menu' && html`
             <div class="space-y-3">
+              <button class="card" style=${{ textAlign: 'left', width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '16px' }} onClick=${() => setMode('appearance')}>
+                <div style=${{ width: '40px', height: '40px', borderRadius: '50%', background: p.accentSoftBg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <${Icon} name="palette" size=${16} color=${p.accent} />
+                </div>
+                <div style=${{ flex: 1 }}>
+                  <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: 0, color: p.text }}>Appearance</p>
+                  <p style=${{ fontSize: '12px', color: p.textMuted, margin: '2px 0 0' }}>
+                    ${themePref === 'system' ? 'Match system' : themePref === 'dark' ? 'Dark mode' : 'Light mode'}
+                  </p>
+                </div>
+                <${Icon} name="chevron" size=${16} color=${p.textMuted} />
+              </button>
               <button class="card" style=${{ textAlign: 'left', width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '16px' }} onClick=${() => setMode('export')}>
-                <div style=${{ width: '40px', height: '40px', borderRadius: '50%', background: '#EDF0E3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <${Icon} name="download" size=${16} color="#5A7A3E" />
+                <div style=${{ width: '40px', height: '40px', borderRadius: '50%', background: p.positiveBg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <${Icon} name="download" size=${16} color=${p.positive} />
                 </div>
                 <div>
-                  <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: 0 }}>Export my data</p>
-                  <p style=${{ fontSize: '12px', color: '#8A7F6A', margin: '2px 0 0' }}>Back up everything as JSON</p>
+                  <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: 0, color: p.text }}>Export my data</p>
+                  <p style=${{ fontSize: '12px', color: p.textMuted, margin: '2px 0 0' }}>Back up everything as JSON</p>
                 </div>
               </button>
               <button class="card" style=${{ textAlign: 'left', width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '16px' }} onClick=${() => setMode('import')}>
-                <div style=${{ width: '40px', height: '40px', borderRadius: '50%', background: '#F5E4D6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <${Icon} name="upload" size=${16} color="#C25A2E" />
+                <div style=${{ width: '40px', height: '40px', borderRadius: '50%', background: p.accentSoftBg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <${Icon} name="upload" size=${16} color=${p.accent} />
                 </div>
                 <div>
-                  <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: 0 }}>Import data</p>
-                  <p style=${{ fontSize: '12px', color: '#8A7F6A', margin: '2px 0 0' }}>Restore from a backup (replaces current)</p>
+                  <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: 0, color: p.text }}>Import data</p>
+                  <p style=${{ fontSize: '12px', color: p.textMuted, margin: '2px 0 0' }}>Restore from a backup (replaces current)</p>
                 </div>
               </button>
               <button class="card" style=${{ textAlign: 'left', width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '16px' }} onClick=${() => setMode('changepw')}>
-                <div style=${{ width: '40px', height: '40px', borderRadius: '50%', background: '#E8E2D0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <${Icon} name="lock" size=${16} color="#2A2720" />
+                <div style=${{ width: '40px', height: '40px', borderRadius: '50%', background: p.surface2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <${Icon} name="lock" size=${16} color=${p.text} />
                 </div>
                 <div>
-                  <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: 0 }}>Change password</p>
-                  <p style=${{ fontSize: '12px', color: '#8A7F6A', margin: '2px 0 0' }}>Update your encryption password</p>
+                  <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: 0, color: p.text }}>Change password</p>
+                  <p style=${{ fontSize: '12px', color: p.textMuted, margin: '2px 0 0' }}>Update your encryption password</p>
                 </div>
               </button>
-              <div style=${{ paddingTop: '8px', textAlign: 'center', fontSize: '12px', color: '#8A7F6A' }}>
+              <div style=${{ paddingTop: '8px', textAlign: 'center', fontSize: '12px', color: p.textMuted }}>
                 ${data.checkins.length} check-ins · ${data.milestones.length} milestones
               </div>
-              <div style=${{ textAlign: 'center', fontSize: '11px', color: '#8A7F6A', paddingTop: '4px' }}>
+              <div style=${{ textAlign: 'center', fontSize: '11px', color: p.textMuted, paddingTop: '4px' }}>
                 🔒 AES-256 encrypted · stored only on this device
               </div>
+            </div>
+          `}
+
+          ${mode === 'appearance' && html`
+            <div class="space-y-4">
+              <div class="theme-picker">
+                ${themeOptions.map(opt => {
+                  const selected = themePref === opt.key;
+                  return html`
+                    <button
+                      class="theme-option ${selected ? 'selected' : ''}"
+                      onClick=${() => onThemeChange(opt.key)}
+                    >
+                      <${Icon} name=${opt.icon} size=${20} color=${selected ? p.accent : p.text} />
+                      <span class="theme-option-label" style=${{ color: selected ? p.accent : p.text }}>${opt.label}</span>
+                    </button>
+                  `;
+                })}
+              </div>
+              <p style=${{ textAlign: 'center', fontSize: '12px', color: p.textMuted, margin: 0 }}>
+                ${themePref === 'system' ? 'Follows your device appearance setting.' : 'Your selection is saved with your data.'}
+              </p>
+              <button class="btn-text" onClick=${() => setMode('menu')}>← Back</button>
             </div>
           `}
 
@@ -1268,11 +1519,11 @@
                 <button class="btn-primary" onClick=${handleCopy}>
                   ${copied ? '✓ Copied!' : 'Copy'}
                 </button>
-                <button class="btn-primary" style=${{ background: '#C25A2E' }} onClick=${handleDownload}>
+                <button class="btn-primary" style=${{ background: p.accent, color: '#fff' }} onClick=${handleDownload}>
                   Download file
                 </button>
               </div>
-              <p style=${{ textAlign: 'center', fontSize: '11px', color: '#8A7F6A', margin: 0 }}>
+              <p style=${{ textAlign: 'center', fontSize: '11px', color: p.textMuted, margin: 0 }}>
                 This export is plain JSON — store it somewhere private.
               </p>
               <button class="btn-text" onClick=${() => setMode('menu')}>← Back</button>
@@ -1282,7 +1533,7 @@
           ${mode === 'import' && html`
             <div class="space-y-3">
               <textarea class="form-textarea mono" value=${importText} onInput=${(e) => { setImportText(e.target.value); setImportError(''); }} rows=${10} placeholder="Paste your exported JSON here…" style=${{ padding: '12px' }}></textarea>
-              ${importError && html`<p style=${{ textAlign: 'center', fontSize: '12px', color: '#A64A2E' }}>${importError}</p>`}
+              ${importError && html`<p style=${{ textAlign: 'center', fontSize: '12px', color: p.negative }}>${importError}</p>`}
               <button class="btn-accent" disabled=${!importText.trim()} onClick=${handleImport}>
                 Replace my data with this
               </button>
@@ -1319,8 +1570,8 @@
                   placeholder="Confirm new password"
                   autocomplete="new-password"
                 />
-                ${pwError && html`<p style=${{ textAlign: 'center', fontSize: '13px', color: '#A64A2E', margin: 0 }}>${pwError}</p>`}
-                ${pwSuccess && html`<p style=${{ textAlign: 'center', fontSize: '13px', color: '#5A7A3E', margin: 0 }}>✓ Password changed</p>`}
+                ${pwError && html`<p style=${{ textAlign: 'center', fontSize: '13px', color: p.negative, margin: 0 }}>${pwError}</p>`}
+                ${pwSuccess && html`<p style=${{ textAlign: 'center', fontSize: '13px', color: p.positive, margin: 0 }}>✓ Password changed</p>`}
                 <button type="submit" class="btn-primary" disabled=${pwBusy || pwSuccess}>
                   ${pwBusy ? 'Re-encrypting…' : pwSuccess ? 'Done' : 'Change password'}
                 </button>
