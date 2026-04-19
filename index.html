@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Horizon" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#F2EDE1" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>Horizon — Five Year Plan</title>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%23F2EDE1'/%3E%3Ccircle cx='90' cy='90' r='55' fill='none' stroke='%23C25A2E' stroke-width='6'/%3E%3Ccircle cx='90' cy='90' r='8' fill='%23C25A2E'/%3E%3C/svg%3E" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter+Tight:wght@400;500;600&display=swap');
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background-color: #F2EDE1;
+      color: #2A2720;
+      font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+      overscroll-behavior: none;
+    }
+    button, input, textarea, select { font-family: inherit; color: inherit; }
+    button { background: none; border: none; cursor: pointer; padding: 0; }
+    input, textarea, select { outline: none; }
+    textarea { resize: none; }
+    .font-display { font-family: 'Fraunces', Georgia, serif; }
+    .grain { background-image: radial-gradient(rgba(0,0,0,0.025) 1px, transparent 1px); background-size: 3px 3px; }
+
+    /* Utility classes */
+    .app-root { min-height: 100vh; min-height: 100dvh; padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+    .container { padding: 0 20px; }
+
+    /* Header */
+    .header { padding: 32px 20px 16px; display: flex; justify-content: space-between; align-items: flex-start; }
+    .header-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .header-dot { width: 6px; height: 6px; border-radius: 50%; background: #C25A2E; }
+    .header-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A7F6A; }
+    .header-title { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 500; letter-spacing: -0.02em; margin: 0; line-height: 1; }
+    .header-arrow { color: #8A7F6A; }
+    .icon-btn { width: 36px; height: 36px; border-radius: 50%; background: #E8E2D0; display: flex; align-items: center; justify-content: center; margin-top: 4px; flex-shrink: 0; }
+
+    /* Vision card */
+    .vision-card { width: 100%; text-align: left; padding: 24px; border-radius: 20px; background: #2A2720; color: #F2EDE1; position: relative; transition: transform 0.15s; }
+    .vision-card:active { transform: scale(0.99); }
+    .vision-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .vision-card-badge { display: flex; align-items: center; gap: 8px; color: #E8A87C; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; }
+    .vision-text { font-family: 'Fraunces', serif; font-size: 20px; line-height: 1.35; letter-spacing: -0.01em; margin: 0; }
+    .vision-placeholder { color: #8A7F6A; font-style: italic; }
+
+    /* Generic card */
+    .card { padding: 20px; border-radius: 20px; background: #FBF7EC; border: 1px solid #D9D0BC; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .card-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: #8A7F6A; }
+
+    /* Stats grid */
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+    .stat-box { padding: 12px; border-radius: 14px; }
+    .stat-box.positive { background: #EDF0E3; }
+    .stat-box.negative { background: #F3E5E0; }
+    .stat-box-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .stat-box-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+    .stat-box-value { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 500; margin: 0; line-height: 1; }
+    .stat-box.positive .stat-box-label, .stat-box.positive .stat-box-value { color: #5A7A3E; }
+    .stat-box.negative .stat-box-label, .stat-box.negative .stat-box-value { color: #A64A2E; }
+
+    .link-btn { margin-top: 12px; font-size: 12px; color: #C25A2E; display: inline-flex; align-items: center; gap: 4px; }
+
+    /* CTA button */
+    .cta-btn { width: 100%; padding: 20px; border-radius: 20px; background: #C25A2E; color: #F2EDE1; display: flex; align-items: center; justify-content: space-between; text-align: left; transition: transform 0.15s; }
+    .cta-btn:active { transform: scale(0.99); }
+    .cta-btn-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.8; }
+    .cta-btn-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; margin: 2px 0 0; }
+    .cta-btn-icon { width: 40px; height: 40px; border-radius: 50%; background: rgba(242,237,225,0.15); display: flex; align-items: center; justify-content: center; }
+
+    /* Nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #F2EDE1; border-top: 1px solid #D9D0BC; display: flex; padding-bottom: env(safe-area-inset-bottom); }
+    .nav-btn { flex: 1; padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #8A7F6A; }
+    .nav-btn.active { color: #C25A2E; }
+    .nav-btn-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+    .nav-btn.active .nav-btn-label { font-weight: 600; }
+
+    /* Trajectory */
+    .traj-row { display: flex; align-items: center; gap: 12px; }
+    .traj-circle { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .traj-label { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500; margin: 0; }
+    .traj-sublabel { font-size: 12px; color: #8A7F6A; margin: 2px 0 0; }
+
+    /* Milestones */
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin: 0 4px 12px; }
+    .section-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; margin: 0; }
+    .add-btn { width: 32px; height: 32px; border-radius: 50%; background: #C25A2E; color: #F2EDE1; display: flex; align-items: center; justify-content: center; }
+    .year-header { display: flex; align-items: center; gap: 12px; margin: 0 4px 8px; }
+    .year-dot { width: 6px; height: 6px; border-radius: 50%; background: #C25A2E; }
+    .year-label { font-family: 'Fraunces', serif; font-size: 14px; letter-spacing: 0.05em; color: #C25A2E; font-weight: 600; }
+    .year-line { flex: 1; height: 1px; background: #D9D0BC; }
+    .milestone-row { padding: 16px; border-radius: 12px; background: #FBF7EC; border: 1px solid #D9D0BC; display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+    .ms-checkbox { margin-top: 2px; flex-shrink: 0; }
+    .ms-checkbox-filled { width: 20px; height: 20px; border-radius: 50%; background: #5A7A3E; display: flex; align-items: center; justify-content: center; }
+    .ms-checkbox-empty { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #8A7F6A; }
+    .ms-text { flex: 1; font-size: 14px; line-height: 1.35; margin: 0; }
+    .ms-text.done { text-decoration: line-through; color: #8A7F6A; }
+    .ms-delete { flex-shrink: 0; opacity: 0.4; padding: 4px; }
+
+    /* Empty state */
+    .empty { padding: 32px; border-radius: 20px; background: #FBF7EC; border: 1px solid #D9D0BC; text-align: center; }
+    .empty-icon { margin: 0 auto 12px; color: #8A7F6A; }
+    .empty-title { font-family: 'Fraunces', serif; font-style: italic; margin: 0 0 4px; }
+    .empty-sub { font-size: 12px; color: #8A7F6A; margin: 0; }
+
+    /* History rows */
+    .history-row { width: 100%; padding: 16px; border-radius: 12px; background: #FBF7EC; border: 1px solid #D9D0BC; display: flex; align-items: center; gap: 12px; text-align: left; margin-bottom: 8px; transition: transform 0.15s; }
+    .history-row:active { transform: scale(0.99); }
+    .traj-dot-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .history-row-content { flex: 1; min-width: 0; }
+    .history-row-title { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 500; margin: 0; }
+    .history-row-meta { font-size: 12px; color: #8A7F6A; margin: 2px 0 0; }
+
+    /* Modal */
+    .modal-backdrop { position: fixed; inset: 0; z-index: 50; background: rgba(42,39,32,0.5); display: flex; align-items: flex-end; justify-content: center; }
+    .modal { width: 100%; max-height: 92vh; overflow-y: auto; background: #F2EDE1; border-radius: 24px 24px 0 0; color: #2A2720; }
+    @media (min-width: 640px) {
+      .modal-backdrop { align-items: center; }
+      .modal { max-width: 440px; border-radius: 24px; }
+    }
+    .modal-header { position: sticky; top: 0; background: #F2EDE1; display: flex; justify-content: space-between; padding: 20px 20px 12px; }
+    .modal-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; margin: 0; letter-spacing: -0.01em; }
+    .modal-subtitle { font-size: 12px; color: #8A7F6A; margin: 2px 0 0; }
+    .modal-body { padding: 0 20px 24px; }
+
+    /* Form controls */
+    .form-input, .form-textarea, .form-select { width: 100%; padding: 12px; border-radius: 12px; background: #FBF7EC; border: 1px solid #D9D0BC; font-size: 14px; }
+    .form-textarea.display { font-family: 'Fraunces', serif; font-size: 18px; padding: 16px; line-height: 1.35; }
+    .form-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #8A7F6A; display: block; margin-bottom: 6px; }
+    .year-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .year-chip { padding: 8px 14px; border-radius: 999px; background: #FBF7EC; border: 1px solid #D9D0BC; font-size: 14px; }
+    .year-chip.selected { background: #2A2720; color: #F2EDE1; border-color: #2A2720; }
+    .btn-primary { width: 100%; padding: 14px; border-radius: 12px; background: #2A2720; color: #F2EDE1; font-weight: 500; }
+    .btn-primary:disabled { opacity: 0.4; }
+    .btn-accent { width: 100%; padding: 14px; border-radius: 12px; background: #C25A2E; color: #F2EDE1; font-weight: 500; }
+    .btn-danger-ghost { width: 100%; padding: 12px; border-radius: 12px; color: #A64A2E; background: #F3E5E0; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-text { width: 100%; padding: 12px; font-size: 14px; color: #8A7F6A; text-align: center; }
+
+    /* Trajectory selector */
+    .traj-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .traj-option { padding: 12px; border-radius: 12px; background: #FBF7EC; border: 1px solid #D9D0BC; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .traj-option.selected { border-width: 2px; }
+    .traj-option-label { font-size: 12px; }
+
+    /* List editor */
+    .list-item { display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 8px; margin-bottom: 6px; }
+    .list-item-text { flex: 1; font-size: 14px; color: #2A2720; }
+    .list-item-remove { opacity: 0.5; padding: 4px; }
+    .list-add-row { display: flex; gap: 8px; }
+    .list-add-input { flex: 1; padding: 10px; border-radius: 8px; background: #FBF7EC; border: 1px solid #D9D0BC; font-size: 14px; }
+    .list-add-btn { padding: 0 12px; border-radius: 8px; color: #F2EDE1; }
+
+    /* PIN screen */
+    .pin-screen { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; }
+    .pin-heading { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 500; text-align: center; margin: 0 0 8px; letter-spacing: -0.01em; }
+    .pin-sub { font-size: 14px; color: #8A7F6A; text-align: center; margin: 0 0 40px; }
+    .pin-dots { display: flex; gap: 16px; margin-bottom: 48px; }
+    .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #2A2720; transition: all 0.15s; }
+    .pin-dot.filled { background: #2A2720; }
+    .pin-dots.error { animation: shake 0.4s; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+    .numpad { display: grid; grid-template-columns: repeat(3, 72px); gap: 12px; }
+    .num-key { width: 72px; height: 72px; border-radius: 50%; background: #FBF7EC; border: 1px solid #D9D0BC; font-family: 'Fraunces', serif; font-size: 24px; font-weight: 500; transition: background 0.1s; }
+    .num-key:active { background: #E8E2D0; }
+    .num-key.action { background: transparent; border: none; font-family: 'Inter Tight', sans-serif; font-size: 14px; color: #8A7F6A; }
+    .pin-error { color: #A64A2E; font-size: 13px; margin-top: 16px; height: 16px; }
+    .pin-footer { margin-top: 32px; font-size: 13px; color: #8A7F6A; text-align: center; }
+    .pin-footer button { color: #C25A2E; text-decoration: underline; }
+
+    /* Display lists */
+    .display-list-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; font-weight: 600; margin-bottom: 8px; }
+    .display-list-item { padding: 12px; border-radius: 8px; font-size: 14px; color: #2A2720; margin-bottom: 6px; }
+
+    /* Reflection */
+    .reflection { font-family: 'Fraunces', serif; font-style: italic; line-height: 1.6; padding: 16px; border-radius: 12px; background: #FBF7EC; margin: 0; }
+
+    /* Utility */
+    .space-y-5 > * + * { margin-top: 20px; }
+    .space-y-4 > * + * { margin-top: 16px; }
+    .space-y-3 > * + * { margin-top: 12px; }
+    .space-y-2 > * + * { margin-top: 8px; }
+    .mb-2 { margin-bottom: 8px; }
+    .mb-3 { margin-bottom: 12px; }
+    .mt-3 { margin-top: 12px; }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 8px; }
+    .gap-3 { gap: 12px; }
+    .mono { font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="https://unpkg.com/preact@10.19.3/dist/preact.min.js"></script>
+  <script src="https://unpkg.com/preact@10.19.3/hooks/dist/hooks.umd.js"></script>
+  <script src="https://unpkg.com/htm@3.1.1/dist/htm.js"></script>
+  <script>
+  (function() {
+    const { h, render, Fragment } = preact;
+    const { useState, useEffect, useRef } = preactHooks;
+    const html = htm.bind(h);
+
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    // ----- Icons (inline SVG) -----
+    const ICON_PATHS = {
+      home: '<path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/>',
+      target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+      book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+      compass: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+      sparkles: '<path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/><path d="M19 14l.75 2.25L22 17l-2.25.75L19 20l-.75-2.25L16 17l2.25-.75z"/>',
+      edit: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/>',
+      plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+      x: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+      trendUp: '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+      trendDown: '<polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/>',
+      minus: '<line x1="5" y1="12" x2="19" y2="12"/>',
+      check: '<circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/>',
+      alert: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+      arrowRight: '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>',
+      calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+      chevron: '<polyline points="9 18 15 12 9 6"/>',
+      trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>',
+      settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+      download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>',
+      upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',
+      copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+      checkMark: '<polyline points="20 6 9 17 4 12"/>',
+      lock: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'
+    };
+
+    function Icon({ name, size = 16, color = 'currentColor', strokeWidth = 2, style = {} }) {
+      return h('svg', {
+        xmlns: 'http://www.w3.org/2000/svg',
+        width: size, height: size,
+        viewBox: '0 0 24 24',
+        fill: 'none',
+        stroke: color,
+        'stroke-width': strokeWidth,
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round',
+        style,
+        dangerouslySetInnerHTML: { __html: ICON_PATHS[name] || '' }
+      });
+    }
+
+    // ----- Crypto helpers -----
+    const VAULT_KEY = 'horizon_vault_v2';
+    const PBKDF2_ITERATIONS = 310000;
+
+    function bufToB64(buf) {
+      const bytes = buf instanceof ArrayBuffer ? new Uint8Array(buf) : buf;
+      let binary = '';
+      for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      return btoa(binary);
+    }
+
+    function b64ToBuf(b64) {
+      const binary = atob(b64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      return bytes.buffer;
+    }
+
+    async function deriveKey(password, saltBuf) {
+      const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        new TextEncoder().encode(password),
+        'PBKDF2',
+        false,
+        ['deriveKey']
+      );
+      return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt: saltBuf, iterations: PBKDF2_ITERATIONS, hash: 'SHA-256' },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+
+    async function encryptJSON(key, obj) {
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const encoded = new TextEncoder().encode(JSON.stringify(obj));
+      const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
+      return { iv: bufToB64(iv.buffer), ciphertext: bufToB64(ciphertext) };
+    }
+
+    async function decryptJSON(key, ivB64, ctB64) {
+      const plaintext = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: b64ToBuf(ivB64) },
+        key,
+        b64ToBuf(ctB64)
+      );
+      return JSON.parse(new TextDecoder().decode(plaintext));
+    }
+
+    function loadVault() {
+      try {
+        const raw = localStorage.getItem(VAULT_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch { return null; }
+    }
+
+    function saveVault(v) {
+      localStorage.setItem(VAULT_KEY, JSON.stringify(v));
+    }
+
+    function defaultData() {
+      const y = new Date().getFullYear();
+      return { vision: { text: '', startYear: y, targetYear: y + 5 }, milestones: [], checkins: [] };
+    }
+
+    async function setupNewVault(password) {
+      const saltBytes = crypto.getRandomValues(new Uint8Array(16));
+      const key = await deriveKey(password, saltBytes.buffer);
+      const initialData = defaultData();
+      const { iv, ciphertext } = await encryptJSON(key, initialData);
+      saveVault({ salt: bufToB64(saltBytes.buffer), iv, ciphertext });
+      return { key, data: initialData };
+    }
+
+    async function unlockVault(password) {
+      const vault = loadVault();
+      if (!vault) return null;
+      const key = await deriveKey(password, b64ToBuf(vault.salt));
+      try {
+        const data = await decryptJSON(key, vault.iv, vault.ciphertext);
+        return { key, data };
+      } catch {
+        return null;
+      }
+    }
+
+    async function encryptAndSave(key, data) {
+      const vault = loadVault();
+      if (!vault) return;
+      const { iv, ciphertext } = await encryptJSON(key, data);
+      saveVault({ salt: vault.salt, iv, ciphertext });
+    }
+
+    async function rekeyVault(newPassword, currentData) {
+      const saltBytes = crypto.getRandomValues(new Uint8Array(16));
+      const newKey = await deriveKey(newPassword, saltBytes.buffer);
+      const { iv, ciphertext } = await encryptJSON(newKey, currentData);
+      saveVault({ salt: bufToB64(saltBytes.buffer), iv, ciphertext });
+      return newKey;
+    }
+
+    // ----- Main App -----
+    function App() {
+      const [authState, setAuthState] = useState('loading'); // loading | setup | locked | unlocked
+      const [cryptoKey, setCryptoKey] = useState(null);
+      const [data, setData] = useState(null);
+      const [tab, setTab] = useState('home');
+      const [modal, setModal] = useState(null);
+      const [viewingId, setViewingId] = useState(null);
+
+      useEffect(() => {
+        const vault = loadVault();
+        setAuthState(vault ? 'locked' : 'setup');
+      }, []);
+
+      const handleSetup = async (password) => {
+        const { key, data } = await setupNewVault(password);
+        setCryptoKey(key);
+        setData(data);
+        setAuthState('unlocked');
+      };
+
+      const handleUnlock = async (password) => {
+        const result = await unlockVault(password);
+        if (!result) return false;
+        setCryptoKey(result.key);
+        setData(result.data);
+        setAuthState('unlocked');
+        return true;
+      };
+
+      const updateData = async (newData) => {
+        setData(newData);
+        try {
+          if (cryptoKey) await encryptAndSave(cryptoKey, newData);
+        } catch (e) { console.error('Save failed:', e); }
+      };
+
+      const handleChangePassword = async (currentPassword, newPassword) => {
+        const verify = await unlockVault(currentPassword);
+        if (!verify) return 'WRONG_CURRENT';
+        const newKey = await rekeyVault(newPassword, data);
+        setCryptoKey(newKey);
+        return 'OK';
+      };
+
+      const wipeAll = () => {
+        localStorage.removeItem(VAULT_KEY);
+        setCryptoKey(null);
+        setData(null);
+        setAuthState('setup');
+      };
+
+      if (authState === 'loading') return null;
+      if (authState === 'setup') return h(PasswordSetupScreen, { onComplete: handleSetup });
+      if (authState === 'locked') return h(PasswordLockScreen, { onUnlock: handleUnlock, onWipe: wipeAll });
+      if (!data) return null;
+
+      const { vision, milestones, checkins } = data;
+      const sortedCheckins = [...checkins].sort((a, b) => b.createdAt - a.createdAt);
+      const latestCheckin = sortedCheckins[0];
+      const recent = sortedCheckins.slice(0, 6);
+      const trajScore = recent.length === 0 ? null :
+        recent.reduce((s, c) => s + (c.trajectory === 'on' ? 1 : c.trajectory === 'off' ? -1 : 0), 0) / recent.length;
+
+      return html`
+        <div class="app-root">
+          <div class="header">
+            <div>
+              <div class="header-eyebrow">
+                <div class="header-dot"></div>
+                <p class="header-label">Five Year Horizon</p>
+              </div>
+              <h1 class="header-title">
+                ${vision.startYear} <span class="header-arrow">→</span> ${vision.targetYear}
+              </h1>
+            </div>
+            <button class="icon-btn" onClick=${() => setModal('settings')}>
+              <${Icon} name="settings" size=${16} />
+            </button>
+          </div>
+
+          ${tab === 'home' && html`<${HomeView}
+            vision=${vision}
+            milestones=${milestones}
+            latestCheckin=${latestCheckin}
+            trajScore=${trajScore}
+            checkinCount=${checkins.length}
+            onEditVision=${() => setModal('vision')}
+            onAddCheckin=${() => setModal('checkin')}
+            onGotoPlan=${() => setTab('plan')}
+            onGotoHistory=${() => setTab('history')}
+          />`}
+
+          ${tab === 'plan' && html`<${PlanView}
+            vision=${vision}
+            milestones=${milestones}
+            onEditVision=${() => setModal('vision')}
+            onAddMilestone=${() => setModal('milestone')}
+            onToggleMilestone=${(id) => updateData({ ...data, milestones: milestones.map(m => m.id === id ? {...m, done: !m.done} : m) })}
+            onDeleteMilestone=${(id) => updateData({ ...data, milestones: milestones.filter(m => m.id !== id) })}
+          />`}
+
+          ${tab === 'history' && html`<${HistoryView}
+            checkins=${sortedCheckins}
+            onView=${(id) => { setViewingId(id); setModal('viewCheckin'); }}
+            onAddCheckin=${() => setModal('checkin')}
+          />`}
+
+          <nav class="bottom-nav">
+            <${NavBtn} icon="home" label="Home" active=${tab === 'home'} onClick=${() => setTab('home')} />
+            <${NavBtn} icon="target" label="Plan" active=${tab === 'plan'} onClick=${() => setTab('plan')} />
+            <${NavBtn} icon="book" label="History" active=${tab === 'history'} onClick=${() => setTab('history')} />
+          </nav>
+
+          ${modal === 'vision' && html`<${VisionModal}
+            vision=${vision}
+            onClose=${() => setModal(null)}
+            onSave=${(v) => { updateData({ ...data, vision: v }); setModal(null); }}
+          />`}
+          ${modal === 'milestone' && html`<${MilestoneModal}
+            vision=${vision}
+            onClose=${() => setModal(null)}
+            onSave=${(m) => { updateData({ ...data, milestones: [...milestones, { id: Date.now().toString(), done: false, ...m }] }); setModal(null); }}
+          />`}
+          ${modal === 'checkin' && html`<${CheckinModal}
+            onClose=${() => setModal(null)}
+            onSave=${(c) => { updateData({ ...data, checkins: [...checkins, { id: Date.now().toString(), createdAt: Date.now(), ...c }] }); setModal(null); }}
+          />`}
+          ${modal === 'viewCheckin' && viewingId && html`<${ViewCheckinModal}
+            checkin=${checkins.find(c => c.id === viewingId)}
+            onClose=${() => { setModal(null); setViewingId(null); }}
+            onDelete=${() => { updateData({ ...data, checkins: checkins.filter(c => c.id !== viewingId) }); setModal(null); setViewingId(null); }}
+          />`}
+          ${modal === 'settings' && html`<${SettingsModal}
+            data=${data}
+            onClose=${() => setModal(null)}
+            onImport=${(d) => { updateData(d); setModal(null); }}
+            onChangePassword=${handleChangePassword}
+          />`}
+        </div>
+      `;
+    }
+
+    // ----- Password Screens -----
+    function PasswordSetupScreen({ onComplete }) {
+      const [password, setPassword] = useState('');
+      const [confirm, setConfirm] = useState('');
+      const [show, setShow] = useState(false);
+      const [error, setError] = useState('');
+      const [busy, setBusy] = useState(false);
+
+      const submit = async (e) => {
+        if (e) e.preventDefault();
+        setError('');
+        if (password.length < 6) { setError('Password must be at least 6 characters'); return; }
+        if (password !== confirm) { setError("Passwords don't match"); return; }
+        setBusy(true);
+        try {
+          await onComplete(password);
+        } catch (err) {
+          console.error(err);
+          setError('Something went wrong. Try again.');
+          setBusy(false);
+        }
+      };
+
+      return html`
+        <div class="pin-screen">
+          <div class="header-eyebrow" style=${{ justifyContent: 'center', marginBottom: '16px' }}>
+            <${Icon} name="lock" size=${14} color="#C25A2E" />
+            <p class="header-label">Horizon</p>
+          </div>
+          <h1 class="pin-heading">Create a password</h1>
+          <p class="pin-sub">Your data is encrypted with this password. If forgotten, it cannot be recovered.</p>
+          <form onSubmit=${submit} style=${{ width: '100%', maxWidth: '360px' }}>
+            <input type="text" name="username" autocomplete="username" value="horizon-user" style=${{ display: 'none' }} readonly />
+            <div class="space-y-3">
+              <input
+                class="form-input"
+                type=${show ? 'text' : 'password'}
+                value=${password}
+                onInput=${(e) => setPassword(e.target.value)}
+                placeholder="New password (6+ characters)"
+                autocomplete="new-password"
+                autofocus
+              />
+              <input
+                class="form-input"
+                type=${show ? 'text' : 'password'}
+                value=${confirm}
+                onInput=${(e) => setConfirm(e.target.value)}
+                placeholder="Confirm password"
+                autocomplete="new-password"
+              />
+              <label style=${{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#8A7F6A', padding: '4px 0' }}>
+                <input type="checkbox" checked=${show} onChange=${(e) => setShow(e.target.checked)} />
+                Show password
+              </label>
+              ${error && html`<p style=${{ color: '#A64A2E', fontSize: '13px', textAlign: 'center', margin: '0' }}>${error}</p>`}
+              <button type="submit" class="btn-primary" disabled=${busy}>
+                ${busy ? 'Encrypting…' : 'Create password'}
+              </button>
+            </div>
+          </form>
+        </div>
+      `;
+    }
+
+    function PasswordLockScreen({ onUnlock, onWipe }) {
+      const [password, setPassword] = useState('');
+      const [error, setError] = useState('');
+      const [busy, setBusy] = useState(false);
+      const [show, setShow] = useState(false);
+      const [confirmWipe, setConfirmWipe] = useState(false);
+
+      const submit = async (e) => {
+        if (e) e.preventDefault();
+        if (busy || !password) return;
+        setError('');
+        setBusy(true);
+        const ok = await onUnlock(password);
+        if (!ok) {
+          setError('Wrong password');
+          setPassword('');
+          setBusy(false);
+        }
+      };
+
+      if (confirmWipe) {
+        return html`
+          <div class="pin-screen">
+            <h1 class="pin-heading" style=${{ color: '#A64A2E' }}>Reset everything?</h1>
+            <p class="pin-sub">This will delete your password and all your plan data. There is no way to recover it.</p>
+            <div style=${{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '100%', maxWidth: '320px' }}>
+              <button class="btn-primary" style=${{ background: '#E8E2D0', color: '#2A2720' }} onClick=${() => setConfirmWipe(false)}>Cancel</button>
+              <button class="btn-primary" style=${{ background: '#A64A2E' }} onClick=${onWipe}>Delete all</button>
+            </div>
+          </div>
+        `;
+      }
+
+      return html`
+        <div class="pin-screen">
+          <div class="header-eyebrow" style=${{ justifyContent: 'center', marginBottom: '16px' }}>
+            <${Icon} name="lock" size=${14} color="#C25A2E" />
+            <p class="header-label">Horizon</p>
+          </div>
+          <h1 class="pin-heading">Welcome back</h1>
+          <p class="pin-sub">Enter your password to unlock</p>
+          <form onSubmit=${submit} style=${{ width: '100%', maxWidth: '360px' }}>
+            <input type="text" name="username" autocomplete="username" value="horizon-user" style=${{ display: 'none' }} readonly />
+            <div class="space-y-3">
+              <input
+                class="form-input"
+                type=${show ? 'text' : 'password'}
+                value=${password}
+                onInput=${(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                autocomplete="current-password"
+                autofocus
+              />
+              <label style=${{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#8A7F6A', padding: '4px 0' }}>
+                <input type="checkbox" checked=${show} onChange=${(e) => setShow(e.target.checked)} />
+                Show password
+              </label>
+              ${error && html`<p style=${{ color: '#A64A2E', fontSize: '13px', textAlign: 'center', margin: '0' }}>${error}</p>`}
+              <button type="submit" class="btn-primary" disabled=${busy || !password}>
+                ${busy ? 'Decrypting…' : 'Unlock'}
+              </button>
+            </div>
+          </form>
+          <div class="pin-footer">
+            <button onClick=${() => setConfirmWipe(true)}>Forgot password?</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // ----- Nav -----
+    function NavBtn({ icon, label, active, onClick }) {
+      return html`
+        <button class="nav-btn ${active ? 'active' : ''}" onClick=${onClick}>
+          <${Icon} name=${icon} size=${20} strokeWidth=${active ? 2.2 : 1.7} />
+          <span class="nav-btn-label">${label}</span>
+        </button>
+      `;
+    }
+
+    // ----- Home View -----
+    function HomeView({ vision, milestones, latestCheckin, trajScore, checkinCount, onEditVision, onAddCheckin, onGotoPlan, onGotoHistory }) {
+      const completed = milestones.filter(m => m.done).length;
+
+      return html`
+        <div class="container space-y-5">
+          <button class="vision-card grain" onClick=${onEditVision}>
+            <div class="vision-card-header">
+              <div class="vision-card-badge">
+                <${Icon} name="sparkles" size=${14} color="#E8A87C" />
+                <span>The Vision</span>
+              </div>
+              <${Icon} name="edit" size=${14} color="rgba(242,237,225,0.5)" />
+            </div>
+            ${vision.text
+              ? html`<p class="vision-text">${vision.text}</p>`
+              : html`<p class="vision-text vision-placeholder">Tap to write where you want to be in ${vision.targetYear}…</p>`
+            }
+          </button>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-label">Trajectory</span>
+              <span style=${{ fontSize: '12px', color: '#8A7F6A' }}>last 6 check-ins</span>
+            </div>
+            <${TrajectoryDisplay} score=${trajScore} />
+          </div>
+
+          ${latestCheckin && html`
+            <div class="card">
+              <div class="card-header">
+                <span class="card-label">Latest Check-in</span>
+                <span style=${{ fontSize: '12px', color: '#8A7F6A' }}>${MONTHS[latestCheckin.month]} ${latestCheckin.year}</span>
+              </div>
+              <div class="stats-grid">
+                <div class="stat-box positive">
+                  <div class="stat-box-header">
+                    <${Icon} name="check" size=${14} color="#5A7A3E" />
+                    <span class="stat-box-label">Positives</span>
+                  </div>
+                  <p class="stat-box-value">${latestCheckin.positives.length}</p>
+                </div>
+                <div class="stat-box negative">
+                  <div class="stat-box-header">
+                    <${Icon} name="alert" size=${14} color="#A64A2E" />
+                    <span class="stat-box-label">Negatives</span>
+                  </div>
+                  <p class="stat-box-value">${latestCheckin.negatives.length}</p>
+                </div>
+              </div>
+              <button class="link-btn" onClick=${onGotoHistory}>
+                View full history <${Icon} name="chevron" size=${12} />
+              </button>
+            </div>
+          `}
+
+          <button class="cta-btn" onClick=${onAddCheckin}>
+            <div>
+              <p class="cta-btn-label">This Month</p>
+              <p class="cta-btn-title">${latestCheckin ? 'New check-in' : 'Start your first check-in'}</p>
+            </div>
+            <div class="cta-btn-icon">
+              <${Icon} name="plus" size=${20} color="#F2EDE1" />
+            </div>
+          </button>
+
+          <div class="stats-grid">
+            <button class="card" style=${{ textAlign: 'left' }} onClick=${onGotoPlan}>
+              <p class="card-label" style=${{ marginBottom: '8px' }}>Milestones</p>
+              <p class="stat-box-value" style=${{ color: '#2A2720' }}>
+                ${completed}<span style=${{ color: '#8A7F6A' }}> / ${milestones.length}</span>
+              </p>
+            </button>
+            <button class="card" style=${{ textAlign: 'left' }} onClick=${onGotoHistory}>
+              <p class="card-label" style=${{ marginBottom: '8px' }}>Check-ins</p>
+              <p class="stat-box-value" style=${{ color: '#2A2720' }}>${checkinCount}</p>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function TrajectoryDisplay({ score }) {
+      if (score === null) {
+        return html`
+          <div class="traj-row">
+            <div class="traj-circle" style=${{ background: '#E8E2D0' }}>
+              <${Icon} name="minus" size=${20} color="#8A7F6A" />
+            </div>
+            <div>
+              <p class="traj-label">No data yet</p>
+              <p class="traj-sublabel">Add a check-in to start tracking</p>
+            </div>
+          </div>
+        `;
+      }
+
+      let label, sub, color, bg, iconName;
+      if (score > 0.33) { label = 'Moving toward it'; sub = 'Keep the momentum going'; color = '#5A7A3E'; bg = '#EDF0E3'; iconName = 'trendUp'; }
+      else if (score < -0.33) { label = 'Drifting off course'; sub = 'Time for a course correction'; color = '#A64A2E'; bg = '#F3E5E0'; iconName = 'trendDown'; }
+      else { label = 'Holding steady'; sub = 'Mixed signals — watch closely'; color = '#8B6F2E'; bg = '#F0E8D0'; iconName = 'minus'; }
+
+      return html`
+        <div class="traj-row">
+          <div class="traj-circle" style=${{ background: bg }}>
+            <${Icon} name=${iconName} size=${20} color=${color} />
+          </div>
+          <div>
+            <p class="traj-label" style=${{ color }}>${label}</p>
+            <p class="traj-sublabel">${sub}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function TrajectoryDot({ trajectory }) {
+      const map = {
+        on: { bg: '#EDF0E3', color: '#5A7A3E', icon: 'trendUp' },
+        off: { bg: '#F3E5E0', color: '#A64A2E', icon: 'trendDown' },
+        neutral: { bg: '#F0E8D0', color: '#8B6F2E', icon: 'minus' }
+      };
+      const c = map[trajectory] || { bg: '#E8E2D0', color: '#8A7F6A', icon: 'minus' };
+      return html`
+        <div class="traj-dot-circle" style=${{ background: c.bg }}>
+          <${Icon} name=${c.icon} size=${16} color=${c.color} />
+        </div>
+      `;
+    }
+
+    // ----- Plan View -----
+    function PlanView({ vision, milestones, onEditVision, onAddMilestone, onToggleMilestone, onDeleteMilestone }) {
+      const sorted = [...milestones].sort((a, b) => a.year - b.year);
+      const byYear = {};
+      sorted.forEach(m => { if (!byYear[m.year]) byYear[m.year] = []; byYear[m.year].push(m); });
+      const years = Object.keys(byYear).map(Number).sort();
+
+      return html`
+        <div class="container space-y-5">
+          <button class="card" style=${{ textAlign: 'left', width: '100%' }} onClick=${onEditVision}>
+            <div class="card-header">
+              <span class="card-label">By ${vision.targetYear}</span>
+              <${Icon} name="edit" size=${14} color="#8A7F6A" />
+            </div>
+            ${vision.text
+              ? html`<p class="vision-text" style=${{ fontSize: '18px', color: '#2A2720' }}>${vision.text}</p>`
+              : html`<p class="vision-text vision-placeholder" style=${{ fontSize: '18px' }}>Define your vision…</p>`
+            }
+          </button>
+
+          <div>
+            <div class="section-header">
+              <h2 class="section-title">Milestones</h2>
+              <button class="add-btn" onClick=${onAddMilestone}>
+                <${Icon} name="plus" size=${16} color="#F2EDE1" />
+              </button>
+            </div>
+
+            ${milestones.length === 0 ? html`
+              <div class="empty">
+                <div class="empty-icon"><${Icon} name="target" size=${24} color="#8A7F6A" /></div>
+                <p class="empty-title">No milestones yet</p>
+                <p class="empty-sub">Break your vision into year-by-year goals</p>
+              </div>
+            ` : html`
+              <div class="space-y-5">
+                ${years.map(year => html`
+                  <div>
+                    <div class="year-header">
+                      <div class="year-dot"></div>
+                      <span class="year-label">${year}</span>
+                      <div class="year-line"></div>
+                    </div>
+                    <div>
+                      ${byYear[year].map(m => html`
+                        <div class="milestone-row" key=${m.id}>
+                          <button class="ms-checkbox" onClick=${() => onToggleMilestone(m.id)}>
+                            ${m.done
+                              ? html`<div class="ms-checkbox-filled"><${Icon} name="checkMark" size=${12} color="#F2EDE1" /></div>`
+                              : html`<div class="ms-checkbox-empty"></div>`
+                            }
+                          </button>
+                          <p class="ms-text ${m.done ? 'done' : ''}">${m.text}</p>
+                          <button class="ms-delete" onClick=${() => onDeleteMilestone(m.id)}>
+                            <${Icon} name="trash" size=${14} />
+                          </button>
+                        </div>
+                      `)}
+                    </div>
+                  </div>
+                `)}
+              </div>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    // ----- History View -----
+    function HistoryView({ checkins, onView, onAddCheckin }) {
+      return html`
+        <div class="container space-y-4">
+          <div class="section-header">
+            <h2 class="section-title">All check-ins</h2>
+            <button class="add-btn" onClick=${onAddCheckin}>
+              <${Icon} name="plus" size=${16} color="#F2EDE1" />
+            </button>
+          </div>
+          ${checkins.length === 0 ? html`
+            <div class="empty">
+              <div class="empty-icon"><${Icon} name="calendar" size=${24} color="#8A7F6A" /></div>
+              <p class="empty-title">No check-ins yet</p>
+              <p class="empty-sub">Log your first month to start tracking</p>
+            </div>
+          ` : html`
+            <div>
+              ${checkins.map(c => html`
+                <button class="history-row" key=${c.id} onClick=${() => onView(c.id)}>
+                  <${TrajectoryDot} trajectory=${c.trajectory} />
+                  <div class="history-row-content">
+                    <p class="history-row-title">${MONTHS[c.month]} ${c.year}</p>
+                    <p class="history-row-meta">
+                      <span style=${{ color: '#5A7A3E' }}>+${c.positives.length}</span>
+                      <span style=${{ margin: '0 6px' }}>·</span>
+                      <span style=${{ color: '#A64A2E' }}>−${c.negatives.length}</span>
+                      ${c.nextActions && c.nextActions.length > 0 && html`
+                        <${Fragment}>
+                          <span style=${{ margin: '0 6px' }}>·</span>
+                          <span>${c.nextActions.length} actions</span>
+                        </${Fragment}>
+                      `}
+                    </p>
+                  </div>
+                  <${Icon} name="chevron" size=${16} color="#8A7F6A" />
+                </button>
+              `)}
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    // ----- Modal shell -----
+    function Modal({ title, subtitle, onClose, children }) {
+      return html`
+        <div class="modal-backdrop" onClick=${(e) => { if (e.target === e.currentTarget) onClose(); }}>
+          <div class="modal">
+            <div class="modal-header">
+              <div>
+                <h2 class="modal-title">${title}</h2>
+                ${subtitle && html`<p class="modal-subtitle">${subtitle}</p>`}
+              </div>
+              <button class="icon-btn" style=${{ marginTop: 0, width: '32px', height: '32px' }} onClick=${onClose}>
+                <${Icon} name="x" size=${16} />
+              </button>
+            </div>
+            <div class="modal-body">${children}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ----- Vision modal -----
+    function VisionModal({ vision, onClose, onSave }) {
+      const [text, setText] = useState(vision.text);
+      const [startYear, setStartYear] = useState(vision.startYear);
+      const [targetYear, setTargetYear] = useState(vision.targetYear);
+
+      return html`
+        <${Modal} title="Your Vision" subtitle="Where do you want to be in ${targetYear - startYear} years?" onClose=${onClose}>
+          <div class="space-y-4">
+            <textarea
+              class="form-textarea display"
+              value=${text}
+              onInput=${(e) => setText(e.target.value)}
+              rows=${6}
+              placeholder="In 5 years, I want to be…"
+              autofocus
+            ></textarea>
+            <div style=${{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div>
+                <label class="form-label">Start year</label>
+                <input class="form-input" type="number" value=${startYear} onInput=${(e) => setStartYear(parseInt(e.target.value) || startYear)} />
+              </div>
+              <div>
+                <label class="form-label">Target year</label>
+                <input class="form-input" type="number" value=${targetYear} onInput=${(e) => setTargetYear(parseInt(e.target.value) || targetYear)} />
+              </div>
+            </div>
+            <button class="btn-primary" onClick=${() => onSave({ text: text.trim(), startYear, targetYear })}>
+              Save vision
+            </button>
+          </div>
+        </${Modal}>
+      `;
+    }
+
+    // ----- Milestone modal -----
+    function MilestoneModal({ vision, onClose, onSave }) {
+      const [text, setText] = useState('');
+      const [year, setYear] = useState(vision.startYear + 1);
+      const years = [];
+      for (let y = vision.startYear; y <= vision.targetYear; y++) years.push(y);
+
+      return html`
+        <${Modal} title="Add milestone" subtitle="A concrete goal along the way" onClose=${onClose}>
+          <div class="space-y-4">
+            <textarea
+              class="form-textarea"
+              style=${{ padding: '16px' }}
+              value=${text}
+              onInput=${(e) => setText(e.target.value)}
+              rows=${3}
+              placeholder="e.g., Save $20k, get promoted, finish the certification…"
+              autofocus
+            ></textarea>
+            <div>
+              <label class="form-label">Target year</label>
+              <div class="year-chips">
+                ${years.map(y => html`
+                  <button class="year-chip ${year === y ? 'selected' : ''}" onClick=${() => setYear(y)}>${y}</button>
+                `)}
+              </div>
+            </div>
+            <button class="btn-primary" disabled=${!text.trim()} onClick=${() => onSave({ text: text.trim(), year })}>
+              Add milestone
+            </button>
+          </div>
+        </${Modal}>
+      `;
+    }
+
+    // ----- Check-in modal -----
+    function CheckinModal({ onClose, onSave }) {
+      const now = new Date();
+      const [month, setMonth] = useState(now.getMonth());
+      const [year, setYear] = useState(now.getFullYear());
+      const [trajectory, setTrajectory] = useState('neutral');
+      const [positives, setPositives] = useState([]);
+      const [negatives, setNegatives] = useState([]);
+      const [nextActions, setNextActions] = useState([]);
+      const [reflection, setReflection] = useState('');
+
+      const trajOptions = [
+        { key: 'on', label: 'On track', color: '#5A7A3E', bg: '#EDF0E3', icon: 'trendUp' },
+        { key: 'neutral', label: 'Mixed', color: '#8B6F2E', bg: '#F0E8D0', icon: 'minus' },
+        { key: 'off', label: 'Off track', color: '#A64A2E', bg: '#F3E5E0', icon: 'trendDown' }
+      ];
+
+      return html`
+        <${Modal} title="${MONTHS[month]} check-in" subtitle="How's it going toward your vision?" onClose=${onClose}>
+          <div class="space-y-5">
+            <div style=${{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <select class="form-select" value=${month} onChange=${(e) => setMonth(parseInt(e.target.value))}>
+                ${MONTHS.map((m, i) => html`<option value=${i}>${m}</option>`)}
+              </select>
+              <input class="form-input" type="number" value=${year} onInput=${(e) => setYear(parseInt(e.target.value) || year)} />
+            </div>
+
+            <div>
+              <label class="form-label">Trajectory this month</label>
+              <div class="traj-selector">
+                ${trajOptions.map(opt => {
+                  const selected = trajectory === opt.key;
+                  return html`
+                    <button
+                      class="traj-option ${selected ? 'selected' : ''}"
+                      style=${selected ? { background: opt.bg, borderColor: opt.color } : {}}
+                      onClick=${() => setTrajectory(opt.key)}
+                    >
+                      <${Icon} name=${opt.icon} size=${16} color=${opt.color} />
+                      <span class="traj-option-label" style=${{ color: selected ? opt.color : '#2A2720', fontWeight: selected ? 600 : 400 }}>${opt.label}</span>
+                    </button>
+                  `;
+                })}
+              </div>
+            </div>
+
+            <${ListEditor} label="Positives" placeholder="Something that went well…" items=${positives} setItems=${setPositives} accentColor="#5A7A3E" accentBg="#EDF0E3" iconName="check" />
+            <${ListEditor} label="Negatives" placeholder="A setback or challenge…" items=${negatives} setItems=${setNegatives} accentColor="#A64A2E" accentBg="#F3E5E0" iconName="alert" />
+            <${ListEditor} label="Next month's actions" placeholder="What will move you forward…" items=${nextActions} setItems=${setNextActions} accentColor="#C25A2E" accentBg="#F5E4D6" iconName="arrowRight" />
+
+            <div>
+              <label class="form-label">Reflection (optional)</label>
+              <textarea
+                class="form-textarea"
+                style=${{ padding: '12px', fontSize: '14px' }}
+                value=${reflection}
+                onInput=${(e) => setReflection(e.target.value)}
+                rows=${3}
+                placeholder="Looking back, what stood out this month?"
+              ></textarea>
+            </div>
+
+            <button class="btn-primary" onClick=${() => onSave({ month, year, trajectory, positives, negatives, nextActions, reflection: reflection.trim() })}>
+              Save check-in
+            </button>
+          </div>
+        </${Modal}>
+      `;
+    }
+
+    // ----- List editor -----
+    function ListEditor({ label, placeholder, items, setItems, accentColor, accentBg, iconName }) {
+      const [draft, setDraft] = useState('');
+      const add = () => { if (draft.trim()) { setItems([...items, draft.trim()]); setDraft(''); } };
+
+      return html`
+        <div>
+          <label class="display-list-label" style=${{ color: accentColor }}>
+            <${Icon} name=${iconName} size=${12} color=${accentColor} />
+            ${label}
+          </label>
+          <div>
+            ${items.map((item, i) => html`
+              <div class="list-item" style=${{ background: accentBg }} key=${i}>
+                <span class="list-item-text">${item}</span>
+                <button class="list-item-remove" onClick=${() => setItems(items.filter((_, j) => j !== i))}>
+                  <${Icon} name="x" size=${14} />
+                </button>
+              </div>
+            `)}
+          </div>
+          <div class="list-add-row">
+            <input
+              class="list-add-input"
+              value=${draft}
+              onInput=${(e) => setDraft(e.target.value)}
+              onKeyDown=${(e) => { if (e.key === 'Enter') { e.preventDefault(); add(); } }}
+              placeholder=${placeholder}
+            />
+            <button class="list-add-btn" style=${{ background: accentColor }} onClick=${add}>
+              <${Icon} name="plus" size=${16} color="#F2EDE1" />
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // ----- View check-in modal -----
+    function ViewCheckinModal({ checkin, onClose, onDelete }) {
+      const [confirmDelete, setConfirmDelete] = useState(false);
+      if (!checkin) return null;
+
+      const trajText = checkin.trajectory === 'on' ? 'On track' : checkin.trajectory === 'off' ? 'Off track' : 'Mixed';
+
+      return html`
+        <${Modal} title="${MONTHS[checkin.month]} ${checkin.year}" subtitle="Check-in details" onClose=${onClose}>
+          <div class="space-y-5">
+            <div class="flex items-center gap-3" style=${{ padding: '12px', borderRadius: '12px', background: '#FBF7EC' }}>
+              <${TrajectoryDot} trajectory=${checkin.trajectory} />
+              <div>
+                <p style=${{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#8A7F6A', margin: 0 }}>Trajectory</p>
+                <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: '2px 0 0' }}>${trajText}</p>
+              </div>
+            </div>
+
+            ${checkin.positives.length > 0 && html`<${DisplayList} label="Positives" items=${checkin.positives} color="#5A7A3E" bg="#EDF0E3" iconName="check" />`}
+            ${checkin.negatives.length > 0 && html`<${DisplayList} label="Negatives" items=${checkin.negatives} color="#A64A2E" bg="#F3E5E0" iconName="alert" />`}
+            ${checkin.nextActions && checkin.nextActions.length > 0 && html`<${DisplayList} label="Next actions" items=${checkin.nextActions} color="#C25A2E" bg="#F5E4D6" iconName="arrowRight" />`}
+
+            ${checkin.reflection && html`
+              <div>
+                <p style=${{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#8A7F6A', marginBottom: '8px' }}>Reflection</p>
+                <p class="reflection">"${checkin.reflection}"</p>
+              </div>
+            `}
+
+            ${!confirmDelete ? html`
+              <button class="btn-danger-ghost" onClick=${() => setConfirmDelete(true)}>
+                <${Icon} name="trash" size=${14} color="#A64A2E" /> Delete this check-in
+              </button>
+            ` : html`
+              <div class="space-y-2">
+                <p style=${{ textAlign: 'center', fontSize: '14px', color: '#A64A2E' }}>Delete permanently?</p>
+                <div style=${{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <button class="btn-primary" style=${{ background: '#E8E2D0', color: '#2A2720' }} onClick=${() => setConfirmDelete(false)}>Cancel</button>
+                  <button class="btn-primary" style=${{ background: '#A64A2E' }} onClick=${onDelete}>Delete</button>
+                </div>
+              </div>
+            `}
+          </div>
+        </${Modal}>
+      `;
+    }
+
+    function DisplayList({ label, items, color, bg, iconName }) {
+      return html`
+        <div>
+          <p class="display-list-label" style=${{ color }}>
+            <${Icon} name=${iconName} size=${12} color=${color} /> ${label}
+          </p>
+          <div>
+            ${items.map((item, i) => html`<div class="display-list-item" style=${{ background: bg }} key=${i}>${item}</div>`)}
+          </div>
+        </div>
+      `;
+    }
+
+    // ----- Settings modal -----
+    function SettingsModal({ data, onClose, onImport, onChangePassword }) {
+      const [mode, setMode] = useState('menu');
+      const [importText, setImportText] = useState('');
+      const [importError, setImportError] = useState('');
+      const [copied, setCopied] = useState(false);
+
+      // Change password state
+      const [curPw, setCurPw] = useState('');
+      const [newPw, setNewPw] = useState('');
+      const [confirmPw, setConfirmPw] = useState('');
+      const [pwError, setPwError] = useState('');
+      const [pwBusy, setPwBusy] = useState(false);
+      const [pwSuccess, setPwSuccess] = useState(false);
+
+      const exportJson = JSON.stringify(data, null, 2);
+
+      const handleCopy = async () => {
+        try {
+          await navigator.clipboard.writeText(exportJson);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        } catch {
+          const ta = document.getElementById('export-ta');
+          if (ta) { ta.select(); try { document.execCommand('copy'); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch {} }
+        }
+      };
+
+      const handleDownload = () => {
+        const blob = new Blob([exportJson], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `horizon-backup-${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+
+      const handleImport = () => {
+        setImportError('');
+        try {
+          const parsed = JSON.parse(importText);
+          if (!parsed.vision || !Array.isArray(parsed.milestones) || !Array.isArray(parsed.checkins)) {
+            throw new Error('Invalid format');
+          }
+          onImport(parsed);
+        } catch {
+          setImportError("That doesn't look like valid plan data.");
+        }
+      };
+
+      const handlePasswordChange = async (e) => {
+        if (e) e.preventDefault();
+        setPwError('');
+        if (newPw.length < 6) { setPwError('New password must be 6+ characters'); return; }
+        if (newPw !== confirmPw) { setPwError("New passwords don't match"); return; }
+        if (newPw === curPw) { setPwError('New password must be different from current'); return; }
+        setPwBusy(true);
+        try {
+          const result = await onChangePassword(curPw, newPw);
+          if (result === 'WRONG_CURRENT') {
+            setPwError('Current password is wrong');
+            setPwBusy(false);
+          } else {
+            setPwSuccess(true);
+            setCurPw(''); setNewPw(''); setConfirmPw('');
+            setTimeout(() => { setPwSuccess(false); setMode('menu'); }, 1200);
+          }
+        } catch {
+          setPwError('Something went wrong');
+          setPwBusy(false);
+        }
+      };
+
+      const title = mode === 'menu' ? 'Settings' : mode === 'export' ? 'Export data' : mode === 'import' ? 'Import data' : 'Change password';
+      const sub = mode === 'menu' ? 'Back up data or change your password' : mode === 'export' ? 'Copy or download to save somewhere safe' : mode === 'import' ? 'Paste your exported JSON below' : 'Your data will be re-encrypted with the new password';
+
+      return html`
+        <${Modal} title=${title} subtitle=${sub} onClose=${onClose}>
+          ${mode === 'menu' && html`
+            <div class="space-y-3">
+              <button class="card" style=${{ textAlign: 'left', width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '16px' }} onClick=${() => setMode('export')}>
+                <div style=${{ width: '40px', height: '40px', borderRadius: '50%', background: '#EDF0E3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <${Icon} name="download" size=${16} color="#5A7A3E" />
+                </div>
+                <div>
+                  <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: 0 }}>Export my data</p>
+                  <p style=${{ fontSize: '12px', color: '#8A7F6A', margin: '2px 0 0' }}>Back up everything as JSON</p>
+                </div>
+              </button>
+              <button class="card" style=${{ textAlign: 'left', width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '16px' }} onClick=${() => setMode('import')}>
+                <div style=${{ width: '40px', height: '40px', borderRadius: '50%', background: '#F5E4D6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <${Icon} name="upload" size=${16} color="#C25A2E" />
+                </div>
+                <div>
+                  <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: 0 }}>Import data</p>
+                  <p style=${{ fontSize: '12px', color: '#8A7F6A', margin: '2px 0 0' }}>Restore from a backup (replaces current)</p>
+                </div>
+              </button>
+              <button class="card" style=${{ textAlign: 'left', width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '16px' }} onClick=${() => setMode('changepw')}>
+                <div style=${{ width: '40px', height: '40px', borderRadius: '50%', background: '#E8E2D0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <${Icon} name="lock" size=${16} color="#2A2720" />
+                </div>
+                <div>
+                  <p style=${{ fontFamily: 'Fraunces, serif', fontSize: '16px', fontWeight: 500, margin: 0 }}>Change password</p>
+                  <p style=${{ fontSize: '12px', color: '#8A7F6A', margin: '2px 0 0' }}>Update your encryption password</p>
+                </div>
+              </button>
+              <div style=${{ paddingTop: '8px', textAlign: 'center', fontSize: '12px', color: '#8A7F6A' }}>
+                ${data.checkins.length} check-ins · ${data.milestones.length} milestones
+              </div>
+              <div style=${{ textAlign: 'center', fontSize: '11px', color: '#8A7F6A', paddingTop: '4px' }}>
+                🔒 AES-256 encrypted · stored only on this device
+              </div>
+            </div>
+          `}
+
+          ${mode === 'export' && html`
+            <div class="space-y-3">
+              <textarea id="export-ta" class="form-textarea mono" readonly value=${exportJson} rows=${10} style=${{ padding: '12px' }}></textarea>
+              <div style=${{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                <button class="btn-primary" onClick=${handleCopy}>
+                  ${copied ? '✓ Copied!' : 'Copy'}
+                </button>
+                <button class="btn-primary" style=${{ background: '#C25A2E' }} onClick=${handleDownload}>
+                  Download file
+                </button>
+              </div>
+              <p style=${{ textAlign: 'center', fontSize: '11px', color: '#8A7F6A', margin: 0 }}>
+                This export is plain JSON — store it somewhere private.
+              </p>
+              <button class="btn-text" onClick=${() => setMode('menu')}>← Back</button>
+            </div>
+          `}
+
+          ${mode === 'import' && html`
+            <div class="space-y-3">
+              <textarea class="form-textarea mono" value=${importText} onInput=${(e) => { setImportText(e.target.value); setImportError(''); }} rows=${10} placeholder="Paste your exported JSON here…" style=${{ padding: '12px' }}></textarea>
+              ${importError && html`<p style=${{ textAlign: 'center', fontSize: '12px', color: '#A64A2E' }}>${importError}</p>`}
+              <button class="btn-accent" disabled=${!importText.trim()} onClick=${handleImport}>
+                Replace my data with this
+              </button>
+              <button class="btn-text" onClick=${() => setMode('menu')}>← Back</button>
+            </div>
+          `}
+
+          ${mode === 'changepw' && html`
+            <form onSubmit=${handlePasswordChange}>
+              <div class="space-y-3">
+                <input type="text" name="username" autocomplete="username" value="horizon-user" style=${{ display: 'none' }} readonly />
+                <input
+                  class="form-input"
+                  type="password"
+                  value=${curPw}
+                  onInput=${(e) => setCurPw(e.target.value)}
+                  placeholder="Current password"
+                  autocomplete="current-password"
+                  autofocus
+                />
+                <input
+                  class="form-input"
+                  type="password"
+                  value=${newPw}
+                  onInput=${(e) => setNewPw(e.target.value)}
+                  placeholder="New password (6+ characters)"
+                  autocomplete="new-password"
+                />
+                <input
+                  class="form-input"
+                  type="password"
+                  value=${confirmPw}
+                  onInput=${(e) => setConfirmPw(e.target.value)}
+                  placeholder="Confirm new password"
+                  autocomplete="new-password"
+                />
+                ${pwError && html`<p style=${{ textAlign: 'center', fontSize: '13px', color: '#A64A2E', margin: 0 }}>${pwError}</p>`}
+                ${pwSuccess && html`<p style=${{ textAlign: 'center', fontSize: '13px', color: '#5A7A3E', margin: 0 }}>✓ Password changed</p>`}
+                <button type="submit" class="btn-primary" disabled=${pwBusy || pwSuccess}>
+                  ${pwBusy ? 'Re-encrypting…' : pwSuccess ? 'Done' : 'Change password'}
+                </button>
+                <button type="button" class="btn-text" onClick=${() => { setMode('menu'); setCurPw(''); setNewPw(''); setConfirmPw(''); setPwError(''); }}>← Back</button>
+              </div>
+            </form>
+          `}
+        </${Modal}>
+      `;
+    }
+
+    // ----- Render -----
+    render(h(App), document.getElementById('app'));
+  })();
+  </script>
+</body>
+</html>
